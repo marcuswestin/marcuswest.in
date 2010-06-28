@@ -1,8 +1,8 @@
 <?php 
 	$output = array();
 	
-	exec('git pull readonly master', $output);
-	exec('make', $output);
+	exec('cd ..; git pull readonly master', $output);
+	exec('cd ..; make', $output);
 	
 	echo(implode('<br/>', $output));
 ?>
