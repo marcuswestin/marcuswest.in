@@ -123,6 +123,11 @@ function startGui() {
 	// build the converter
 	converter = new Showdown.converter();
 
+	var lastShowdownText = store.get('lastShowdownText')
+	if (lastShowdownText) {
+		inputPane.value = lastShowdownText
+	}
+	
 	// do an initial conversion to avoid a hiccup
 	convertText();
 
@@ -154,8 +159,9 @@ function convertText() {
 	var startTime = new Date().getTime();
 
 	// Do the conversion
+	store.set('lastShowdownText', text);
 	text = converter.makeHtml(text);
-
+	
 	// display processing time
 	var endTime = new Date().getTime();	
 	processingTime = endTime - startTime;
