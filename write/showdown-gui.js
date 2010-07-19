@@ -356,7 +356,7 @@ function setPaneHeights() {
 
 	// resize all panes
 	inputPane.style.height = roomLeft + "px";
-	previewPane.style.height = roomLeft + "px";
+	previewPane.style.height = roomLeft + 16 + "px";
 	outputPane.style.height = roomLeft + "px";
 	syntaxPane.style.height = roomLeft + "px";
 }
