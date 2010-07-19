@@ -402,7 +402,9 @@ function initializePostButtons() {
 		var name = prompt("What do you want to call it?");
 		if (!name) { return; }
 		withLocalStorage(function(data) {
-			data.posts[name] = name;
+			var underline = []
+			underline.length = name.length + 1
+			data.posts[name] = name + "\n" + underline.join('=');
 			data.current = name;
 		})
 		rebuildPostsSelect();
