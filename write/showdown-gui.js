@@ -128,8 +128,8 @@ function startGui() {
 
 	// Set up the posts select
 	initializePostButtons()
-	selectCurrentPost()
 	rebuildPostsSelect()
+	selectCurrentPost()
 	postSelect.onchange = selectCurrentPost
 	
 	// do an initial conversion to avoid a hiccup
