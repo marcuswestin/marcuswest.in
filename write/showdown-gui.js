@@ -57,6 +57,7 @@ var convertTextTimer,processingTime;
 var lastText,lastOutput,lastRoomLeft;
 var convertTextSetting, convertTextButton, paneSetting;
 var inputPane,previewPane,outputPane,syntaxPane;
+var postSelect;
 var maxDelay = 3000; // longest update pause (in ms)
 
 
@@ -74,7 +75,9 @@ function startGui() {
 	previewPane = document.getElementById("previewPane");
 	outputPane = document.getElementById("outputPane");
 	syntaxPane = document.getElementById("syntaxPane");
-
+	
+	postSelect = document.getElementById("postSelect");
+	
 	// set event handlers
 	convertTextSetting.onchange = onConvertTextSettingChanged;
 	convertTextButton.onclick = onConvertTextButtonClicked;
@@ -123,10 +126,11 @@ function startGui() {
 	// build the converter
 	converter = new Showdown.converter();
 
-	var lastShowdownText = store.get('lastShowdownText')
-	if (lastShowdownText) {
-		inputPane.value = lastShowdownText
-	}
+	// Set up the posts select
+	initializePostButtons()
+	selectCurrentPost()
+	rebuildPostsSelect()
+	postSelect.onchange = selectCurrentPost
 	
 	// do an initial conversion to avoid a hiccup
 	convertText();
@@ -155,11 +159,14 @@ function convertText() {
 	} else {
 		lastText = text;
 	}
-
+	
+	withLocalStorage(function(data) {
+		data.posts[data.current] = text;
+	})
+	
 	var startTime = new Date().getTime();
 
 	// Do the conversion
-	store.set('lastShowdownText', text);
 	text = converter.makeHtml(text);
 	
 	// display processing time
@@ -337,7 +344,7 @@ function setPaneHeights() {
 	var textareaTop = getTop(textarea);
 
 	// figure out how much room the panes should fill
-	var roomLeft = windowHeight - footerHeight - textareaTop;
+	var roomLeft = windowHeight - footerHeight - textareaTop - 25;
 
 	if (roomLeft < 0) roomLeft = 0;
 
@@ -353,3 +360,65 @@ function setPaneHeights() {
 	outputPane.style.height = roomLeft + "px";
 	syntaxPane.style.height = roomLeft + "px";
 }
+
+// Local Storage
+function withLocalStorage(transactionFn) {
+	var key = 'showdown-edit',
+		data = store.get(key);
+	
+	if (!data) {
+		data = {};
+		data.current = 'Markdown Instructions';
+		data.posts = {};
+		data.posts[data.current] = inputPane.value
+	}
+	transactionFn(data);
+	store.set(key, data);
+}
+
+function rebuildPostsSelect() {
+	var html = '';
+	withLocalStorage(function(data) {
+		for (var name in data.posts) {
+			var selected = (name == data.current) ? ' selected' : '';
+			html += '<option'+selected+'>' + name + '</option>';
+		}
+	})
+	postSelect.innerHTML = html
+}
+
+function selectCurrentPost() {
+	var name = postSelect.value
+	if (!name) { return; }
+	withLocalStorage(function(data) {
+		data.current = name;
+		inputPane.value = data.posts[name]
+	})
+	convertText()
+}
+
+function initializePostButtons() {
+	document.getElementById('addPostButton').onclick = function() {
+		var name = prompt("What do you want to call it?");
+		if (!name) { return; }
+		withLocalStorage(function(data) {
+			data.posts[name] = name;
+			data.current = name;
+		})
+		rebuildPostsSelect();
+		selectCurrentPost();
+	}
+
+	document.getElementById('deletePostButton').onclick = function() {
+		var name = postSelect.value,
+			goAhead = confirm("Are you sure you want to remove \"" + name + "\"?");
+
+		if (!goAhead) { return; }
+		withLocalStorage(function(data) {
+			delete data.posts[name];
+		})
+		rebuildPostsSelect();
+		selectCurrentPost();
+	}
+}
+

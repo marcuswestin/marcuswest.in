@@ -63,7 +63,7 @@
 			padding: 0;
 			position: relative;
 			width: 47.5%;
-			margin-top: -1.4em;
+			margin-top: 1em;
 		}
 		
 		#leftContainer {
@@ -156,8 +156,9 @@
 		#inputPane {
 			background-color: #fff;
 			padding: 8px;
-			font-size: 14px;
-			font-family: Helvetica;
+			font-size: 13px;
+			font-family: courier;
+			line-height: 14px;
 		}
 		
 		#previewPane {
@@ -248,16 +249,15 @@
 
 <body>
 
-	<div id="pageHeader">
-		<h1><a href="http://www.attacklab.net/showdown-gui.html">Showdown</a></h1>
-		<h4>a javascript port of <a href="http://daringfireball.net/projects/markdown/" title="The Markdown web site">Markdown</a></h4>
-	</div>
-	
 	<div id="leftContainer">
 		<div class="paneHeader">
-			<span>Input</span>
+			<span>Post (markdown)</span>
+			<select id="postSelect"></select>
+			<button id="addPostButton">Add post</button>
+			<button id="deletePostButton">Delete post</button>
 		</div>
-		<textarea id="inputPane" cols="80" rows="20" class="pane">Using this tool
+		<textarea id="inputPane" cols="80" rows="20" class="pane">
+Using this tool
 ---------------
 
 This page lets you create HTML by entering text in a simple format that's easy to read and write.
@@ -676,33 +676,10 @@ Like code blocks, code spans will be displayed in a monospaced typeface.  Markdo
 	
 	<div id="footer">
 		<span id="byline">
-			<b><a href="http://www.attacklab.net/showdown-v0.9.zip">Download v0.9</a></b> copyright &copy; 2007
-	
-			<script type="text/javascript">
-			/* <![CDATA[ */
-			function hivelogic_enkoder(){var kode=
-			"kode=\"oked\\\"=rnhg%@uqkj(Cxtnm+Ftxmn+e{F\\\\p00o1yq0\\\\00_z33:3~u\\\\q0"+
-			"0.0m4tHq,I~.rmhxy{u0\\\\001\\\\77{Fpt3_333_33L{\\\\z00m0\\\\m00w0mo:xqnhz0"+
-			"\\\\00.,\\\\u00x00\\\\00qIh.Qymux,\\\\t00,0\\\\q00M1\\\\t00~0.{.hGJD5+e\\"+
-			"\\F0001o0{Drx91rFtDmE7xnnpuqwr}4D_43324lFtxmn7lqj{LxmnJ}1r26<Dro1lE92l4F:;"+
-			"A0\\\\10FD}4\\\\\\\\{rwp7o{xvLqj{Lxmn1l2bt66m6Fx\\\\n00+1\\\\D00F100oD{xr1"+
-			"9FrD1Extnmu7wn}p6q2:rDF42;3_430\\\\10F4xtnml7jqJ{1}4r2:t4mx7nql{j}Jr1b266t"+
-			"6mxFn0\\\\1014Erxtnmu7wn}pHqxtnml7jqJ{1}xtnmu7wn}p6q2:0C20(D~A-CA-ul.xCoA6"+
-			"Bouqkjr4tkzmAn1o/10\\\\10Ciuqkji4gnIxjuGk.z/o93oA.lBi/61i7C>8~AC1zYoxmtl4u"+
-			"xIsgnIxju.k/i3_33uqkj~C>%@{**i>url+3@l>n?gr1hhojqkwl>..~,@frnhgf1dkFugrDh+"+
-			"w,l60l>+i?f,3.f4@;5{>@.wVlujqi1ruFpdkFugr+h,f0\\\\00rnhg{@;\\\"=x''f;roi(0"+
-			"=i;k<do.eelgnhti;++{)=cokedc.ahCrdoAe(t)i3-i;(f<c)0+c1=82x;=+tSirgnf.orCma"+
-			"hCrdo(e)ck}do=ex\";x='';for(i=0;i<(kode.length-1);i+=2){x+=kode.charAt(i+1"+
-			")+kode.charAt(i)}kode=x+(i<kode.length?kode.charAt(kode.length-1):'');"
-			;var i,c,x;while(eval(kode));}hivelogic_enkoder();
-			/* ]]> */
-			</script>
-			John Fraser
-			<script type="text/javascript">
-			/* <![CDATA[ */
-			document.write("</a>");
-			/* ]]> */
-			</script>
+			Using <a href="http://www.attacklab.net/showdown-gui.html">Showdown</a>,
+            the javascript port of <a href="http://daringfireball.net/projects/markdown/" title="The Markdown web site">Markdown</a>.
+			Copyright &copy; 2007 John Fraser.
+			<b><a href="http://www.attacklab.net/showdown-v0.9.zip">Download v0.9</a></b>
 		</span>
 	
 		<span id="convertTextControls">
