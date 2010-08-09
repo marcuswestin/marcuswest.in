@@ -13,8 +13,8 @@ Let's say you're building a small task manager. To render all of a user's tasks 
     <h1>These are your tasks matey</h1>
     <?php
     $myTasks = sqlQueryGetMyTasks();
-    for ($i = 0; $i < sizeof($tasks); $i++) {
-        $task = $tasks[$i];
+    for ($i = 0; $i < sizeof($myTasks); $i++) {
+        $task = $myTasks[$i];
         $divClass = "task" . ($task->urgent ? " urgent" : "");
     	echo "<div class=\"$divClass\">"
     	    . "<span class=\"title\">" . $task->title . "</span>"

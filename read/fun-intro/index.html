@@ -24,8 +24,8 @@
 <pre><code><span class="xml">&lt;</span>h1<span class="xml">&gt;</span>These are your tasks matey<span class="xml">&lt;</span>/h1<span class="xml">&gt;</span>
 <span class="xml">&lt;</span>?php
 $myTasks<span class="operator"> = </span>sqlQueryGetMyTasks();
-<span class="keyword">for </span>($i<span class="operator"> = </span>0; $i <span class="xml">&lt;</span> sizeof($tasks); $i++) {
-    $task<span class="operator"> = </span>$tasks[$i];
+<span class="keyword">for </span>($i<span class="operator"> = </span>0; $i <span class="xml">&lt;</span> sizeof($myTasks); $i++) {
+    $task<span class="operator"> = </span>$myTasks[$i];
     $divClass<span class="operator"> = </span><span class="string">"task"</span> . ($task-<span class="xml">&gt;</span>urgent ? <span class="string">" urgent"</span> : <span class="string">""</span>);
     echo <span class="string">"<span class="xml">&lt;</span>div class=\"</span>$divClass\<span class="string">"<span class="xml">&gt;</span>"</span>
         . <span class="string">"<span class="xml">&lt;</span>span class=\"</span>title\<span class="string">"<span class="xml">&gt;</span>"</span> . $task-<span class="xml">&gt;</span>title . <span class="string">"<span class="xml">&lt;</span>/span<span class="xml">&gt;</span>"</span>
