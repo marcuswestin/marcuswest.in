@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+    <title>Fun (a programming language for the realtime web)</title>
+    <link href="../../index.less" type="text/css" rel="stylesheet/less" />
+	<script src="../../lib/less.js"></script>
+	
+</head>
+<body>
+    <noscript style="width:50px; margin: 50px auto;">why not?</noscript>
+	<div id="content">
+		<div class="header">marcuswest.in</div>
+	    <span class="date">August 8th, 2010</span>
+        <h1>Fun (a programming language for the realtime web)</h1>
+
+<p>What if you could build realtime web apps with the same ease as you build static web pages in PHP today? Without long polling, event handling and state synchronization, the engineering complexity of realtime web applications would drop by an order of magnitude. There would be a fundamental shift in the way we build the realtime web. This is the future of <a href="http://github.com/marcuswestin/fun">Fun</a>.</p>
+
+<h2>What is Fun?</h2>
+
+<p>To better understand what Fun is, let's first look at what it's not. Fun is not PHP. However, Fun and PHP have something in common: they use templates and logic to render data into HTML, or more generally speaking they <em>map state to UI</em>.</p>
+
+<p>Let's say you're building a small task manager. To render all of a user's tasks with PHP you would do something like this (sorry for the weird syntax highlighting):</p>
+
+<pre><code><span class="xml">&lt;</span>h1<span class="xml">&gt;</span>These are your tasks matey<span class="xml">&lt;</span>/h1<span class="xml">&gt;</span>
+<span class="xml">&lt;</span>?php
+$myTasks<span class="operator"> = </span>sqlQueryGetMyTasks();
+<span class="keyword">for </span>($i<span class="operator"> = </span>0; $i <span class="xml">&lt;</span> sizeof($tasks); $i++) {
+    $task<span class="operator"> = </span>$tasks[$i];
+    $divClass<span class="operator"> = </span><span class="string">"task"</span> . ($task-<span class="xml">&gt;</span>isUrgent ? <span class="string">" urget"</span> : <span class="string">""</span>);
+    echo <span class="string">"<span class="xml">&lt;</span>div class=\"</span>$divClass\<span class="string">"<span class="xml">&gt;</span>"</span>
+        . <span class="string">"<span class="xml">&lt;</span>span class=\"</span>title\<span class="string">"<span class="xml">&gt;</span>"</span> . $task-<span class="xml">&gt;</span>title . <span class="string">"<span class="xml">&lt;</span>/span<span class="xml">&gt;</span>"</span>
+        .<span class="string">"<span class="xml">&lt;</span>/div<span class="xml">&gt;</span>"</span>;
+}
+?<span class="xml">&gt;</span>
+</code></pre>
+
+<p>If someone creates a new task for our user or marks a task as urgent, our user has to refresh the page to be made aware of the change. Alternatively we write a javascript layer that long/short-polls the server and updates the DOM whenever there is a state change event. However, this is a complex and error prone engineering challenge, both client-side and server-side. </p>
+
+<p>So while PHP and its cousin web frameworks in Python and Ruby sport no means to easily accomplish realtime state synchronization, they all accomplish the task of statically mapping state to UI with bravado.</p>
+
+<h2>Ok, now let's have some Fun</h2>
+
+<p>Here's your first Fun app. It's also a simple task list. (No syntax highlighting, unfortunately. Please use your imagination!)</p>
+
+<pre><code><span class="keyword">let </span>user<span class="operator"> = </span><span class="global">Session</span>.User
+<span class="keyword">let </span>myTasks<span class="operator"> = </span>Query({ type: <span class="string">"task"</span>, owner: user.id })
+
+<span class="xml">&lt;</span>h1<span class="xml">&gt;</span><span class="string">"Hello "</span> user.name <span class="string">", these are your tasks matey:"</span><span class="xml">&lt;</span>/h1<span class="xml">&gt;</span>
+<span class="keyword">for </span>(task <span class="keyword">in </span>myTasks) {
+    <span class="xml">&lt;</span>div class=<span class="string">"task"</span> + (task.urgent ? <span class="string">" urgent"</span>)<span class="xml">&gt;</span>
+        <span class="xml">&lt;</span>input <span class="attr">data</span>=task.title /<span class="xml">&gt;</span>
+        <span class="keyword">if </span>(task.completed) {
+            <span class="xml">&lt;</span>span class=<span class="string">"status"</span><span class="xml">&gt;</span><span class="string">"Completed!"</span><span class="xml">&lt;</span>/span<span class="xml">&gt;</span>
+        } <span class="keyword">else </span>{
+            <span class="xml">&lt;</span>button <span class="attr">onClick</span>=markComplete(task)/<span class="xml">&gt;</span><span class="string">"Mark as completed"</span><span class="xml">&lt;</span>/button<span class="xml">&gt;</span>
+        }
+    <span class="xml">&lt;</span>/div<span class="xml">&gt;</span>
+}
+
+<span class="keyword">let </span>markComplete<span class="operator"> = </span><span class="type">handler</span>(task) {
+    task.completed<span class="operator"> = </span>true
+}
+
+<span class="xml">&lt;</span>h3<span class="xml">&gt;</span><span class="string">"Create a new task"</span><span class="xml">&lt;</span>/h3<span class="xml">&gt;</span>
+<span class="xml">&lt;</span>input <span class="attr">data</span>=<span class="global">Local</span>.newTaskTitle /<span class="xml">&gt;</span>
+<span class="xml">&lt;</span>button <span class="attr">onClick</span>=createNewTask /<span class="xml">&gt;</span>
+
+<span class="keyword">let </span>createNewTask<span class="operator"> = </span><span class="type">handler</span>() {
+    <span class="keyword">let </span>taskTitle<span class="operator"> = </span><span class="global">Local</span>.newTaskTitle
+    set <span class="global">Local</span>.newTaskTitle<span class="operator"> = </span><span class="string">""</span>
+    <span class="global">Global</span>.create({ owner: user.id, type: <span class="string">"task"</span>, title: taskTitle })
+}
+</code></pre>
+
+<p>This might seem a bit vanilla. So why should it excite you?</p>
+
+<p>In Fun, when you say <code>"Hello " user.name</code>, you don't mean just "render the value of <code>user.name</code> right now". Rather, you mean "display the value of <code>user.name</code> here, and any time <code>user.name</code> changes update the UI." In other words, when someone edits their name you see the changes keystroke by keystroke. And you don't need to write any code for networking, event handling, state synchronization, or DOM manipulation! Fun takes care of all that for you, all you do is <em>map state to UI</em>. Fun, eh?</p>
+
+<p>The realtime state synchronization works for lists as well. The statement <code>let myTasks = Query({ type: 'task', owner: user.id })</code> declares a list of all tasks that belong to the current user. The <code>for (task in myTasks) { ... }</code> loop then emits a piece of HTML for each task - if a new task gets assigned to the user then the for loops emits another piece of HTML for that task, without any effort on your part.</p>
+
+<p>If this doesn't excite you, then read it again damnit!</p>
+
+<h2>Are these all your ideas? And can I use Fun now?</h2>
+
+<p>Nope. And No.</p>
+
+<p>First, credit where it's due! This project is conceptually inspired from conversations with Justin Rosenstein about the language LunaScript that he's building together with Dustin Moskovitz &amp; team at <a href="http://asana.com">Asana</a>, and from conversations with Misko Hevery about the HTML compiler <a href="http://angularjs.org/">&lt;angular/&gt;</a> that he's building over at Google.</p>
+
+<p>And a disclaimer: All the features of Fun used in the example above are not yet implemented. "Vaporware, Vaporware!" you say. Not quite! A significant subset of Fun already parses and compiles correctly, and I'm making fast progress in implementing the remaining features. At this point I can safely say that Fun is a viable project and that you will be able to use it to build realtime web application by the end of the year.</p>
+
+<h2>Technical details you should know about Fun</h2>
+
+<p><strong>First:</strong> Since the primary purpose of Fun is to emit HTML, any statement with a single literal value implicitly emits that value. No <code>echo</code> or <code>emit</code> needed. Hello World in Fun is about as simple as it can get:</p>
+
+<pre><code><span class="string">"Hello World!"</span>
+</code></pre>
+
+<p><strong>Second:</strong> Fun has syntactical support for XML. Rather than juggling strings with HTML (PHP: <code>$html = "&lt;div class='$class'&gt;Hi&lt;/div&gt;";</code>) or switching context between HTML and logic (PHP: <code>&lt;div class="&lt;?php echo $class ?&gt;"&gt;Hi&lt;/div&gt;</code>), you simply inline the XML that you want to emit as HTML (Fun: <code>&lt;div class=class&gt; "Hi" &lt;/div&gt;</code>)</p>
+
+<p><strong>Third:</strong> Fun is declarative. You declare aliases like <code>let aNumber = 1</code>, or <code>let someXML = &lt;div&gt; "Hello!" &lt;/div&gt;</code>, but these declarations never change - there are no <em>variables</em> (i.e. you can't say <code>aNumber += 2</code>). The reasons why are technical and I won't bore you with them now. But take my word for it: in this sort of programming we don't need variables.</p>
+
+<p><strong>Finally:</strong> a quick look at the Fun stack. There are a bunch of moving pieces:</p>
+
+<ul>
+<li><p>Parser: The <a href="http://github.com/marcuswestin/fun/blob/fba44d87b2b5b9d3fbbf7c35d839cef7392caa1f/language/grammar.peg">Fun grammar</a> is written in <a href="http://pegjs.majda.cz/">PEG.js</a>, a parser generator written in javascript that outputs parsers <em>also</em> written in javascript.</p></li>
+<li><p>Compiler: The <a href="http://github.com/marcuswestin/fun/blob/fba44d87b2b5b9d3fbbf7c35d839cef7392caa1f/language/compiler.js">Fun compiler</a> is written in javascript, and converts the abstract syntax trees generated by the parser into javascript code that gets run both server and client side.</p></li>
+<li><p>Realtime: The generated javascript uses <a href="http://github.com/marcuswestin/fin">fin</a> to synchronize data across browsers. Fin is a realtime key/value datastore written in javascript. Fin consists of</p>
+
+<ul><li><p>The <a href="http://github.com/marcuswestin/fin/blob/master/js/client/api.js">fin API</a>, which runs both in browsers and on servers.</p></li>
+<li><p><a href="http://github.com/mcarter/js.io">js.io</a> for code modularization and realtime networking</p></li>
+<li><p><a href="http://nodejs.org/">node.js</a> for the web server</p></li>
+<li><p><a href="http://code.google.com/p/redis/">redis</a> for persistance of data structures and pubsub of data changes</p></li></ul></li>
+</ul>
+
+<h2>Seeing is believing</h2>
+
+<p>I know, yet I don't have a demo up. Shucks!</p>
+
+<p>However, when I said you can't use Fun yet I wasn't 100% honest. You can definitely get started playing with Fun - it's just not that useful yet! Grab your own copy of Fun and get some examples up and running:</p>
+
+<pre><code>git clone http://github.com/marcuswestin/fun.git fun
+cd fun
+make
+</code></pre>
+
+<p>Then navigate to</p>
+
+<pre><code>http://localhost/fun-demo/parse_and_run.php?code=if_else.fun&amp;verbose=true
+</code></pre>
+
+<p>and you should have your first Fun script running locally!</p>
+
+<p>Stay tuned for lots of exciting progress in the coming couple of weeks.</p>
+    </div>
+</body>
+</html>
