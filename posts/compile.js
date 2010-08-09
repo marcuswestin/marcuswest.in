@@ -11,6 +11,9 @@ var posts = fs.readdirSync('./'),
 	markdownConverter = new Showdown.converter(),
 	postsInfo = []
 
+fs.renameSync('../read/', '/tmp/marcuswest.in-compile-'+new Date().getTime())  // Dump previous compilation
+fs.mkdirSync('../read', 0755)
+
 for (var i=0, post; post = posts[i]; i++) {
 	if (!fs.statSync('./' + post).isDirectory()) { continue }
 	var postInfo = JSON.parse(fs.readFileSync('./' + post + '/info.json')),
@@ -28,7 +31,6 @@ for (var i=0, post; post = posts[i]; i++) {
 	
 	html = syntaxHighlight(html)
 	
-	fs.renameSync('../read/' + postInfo.id, '/tmp/marcuswest.in-compile-' + new Date().getTime()) // Dump previous 
 	fs.mkdirSync('../read/' + postInfo.id + '/', 0755)
 	fs.writeFileSync('../read/' + postInfo.id + '/index.html', html)
 
