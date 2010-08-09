@@ -15,7 +15,7 @@ Let's say you're building a small task manager. To render all of a user's tasks 
     $myTasks = sqlQueryGetMyTasks();
     for ($i = 0; $i < sizeof($tasks); $i++) {
         $task = $tasks[$i];
-        $divClass = "task" . ($task->isUrgent ? " urget" : "");
+        $divClass = "task" . ($task->urgent ? " urgent" : "");
     	echo "<div class=\"$divClass\">"
     	    . "<span class=\"title\">" . $task->title . "</span>"
             ."</div>";
