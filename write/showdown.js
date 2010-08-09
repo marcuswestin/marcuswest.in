@@ -72,7 +72,7 @@ var Showdown = {};
 // Wraps all "globals" so that the only thing
 // exposed is makeHtml().
 //
-Showdown.converter = function() {
+exports.converter = Showdown.converter = function() {
 
 //
 // Globals:
