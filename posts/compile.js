@@ -28,6 +28,7 @@ for (var i=0, post; post = posts[i]; i++) {
 		.replace('#TITLE#', postInfo.title)
 		.replace('#DATE#', '<span class="date">' + postInfo.date + '</span>')
 		.replace('#BODY#', bodyHTML)
+		.replace('#POST_ID#', '"'+postInfo.id+'"')
 	
 	html = syntaxHighlight(html)
 	

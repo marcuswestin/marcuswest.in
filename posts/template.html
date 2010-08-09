@@ -12,6 +12,17 @@
 		<div class="header">marcuswest.in</div>
 	    #DATE#
         #BODY#
+        
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        (function() {
+            window.disqus_identifier = #POST_ID#
+            var doc = document,
+                head = doc.getElementsByTagName('head')[0]
+            
+            head.appendChild(doc.createElement('script')).src='http://marcuswestin.disqus.com/embed.js'
+        })();
+        </script>
     </div>
 </body>
 </html>
