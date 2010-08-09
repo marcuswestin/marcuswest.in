@@ -67,6 +67,8 @@ In Fun, when you say `"Hello " user.name`, you don't mean just "render the value
 
 The realtime state synchronization works for lists as well. The statement `let myTasks = Query({ type: 'task', owner: user.id })` declares a list of all tasks that belong to the current user. The `for (task in myTasks) { ... }` loop then emits a piece of HTML for each task - if a new task gets assigned to the user then the for loops emits another piece of HTML for that task, without any effort on your part.
 
+To bind an element that reflects a piece of state to a piece of data, all you do is set `data` attribute in the element. For example, `<input data=task.title />` will create an input field with the value of that particular task's title. If a user starts typing into the input field, then all other users viewing a piece of UI also bound to that task's title will see the updates, keystroke by keystroke.
+
 If this doesn't excite you, then read it again damnit!
 
 Are these all your ideas? And can I use Fun now?
