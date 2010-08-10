@@ -72,7 +72,7 @@ var Showdown = {};
 // Wraps all "globals" so that the only thing
 // exposed is makeHtml().
 //
-exports.converter = Showdown.converter = function() {
+Showdown.converter = function() {
 
 //
 // Globals:
@@ -1294,3 +1294,7 @@ var escapeCharacters_callback = function(wholeMatch,m1) {
 }
 
 } // end of Showdown.converter
+
+if (tyopeof exports != 'undefined') {
+	exports.converter = Showdown.converter
+}
