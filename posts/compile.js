@@ -39,6 +39,7 @@ for (var i=0, post; post = posts[i]; i++) {
 	postsInfo.push(postInfo)
 }
 
+postsInfo.sort(function(a,b){ return a.date < b.date ? -1 : 1 })
 fs.writeFileSync('../read/posts.json', JSON.stringify(postsInfo))
 
 function syntaxHighlight(html) {
