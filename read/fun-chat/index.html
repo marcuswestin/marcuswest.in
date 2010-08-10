@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+    <title>A quick chat app in Fun</title>
+    <link href="../../index.less" type="text/css" rel="stylesheet/less" />
+	<script src="../../lib/less.js"></script>
+	
+</head>
+<body>
+    <noscript style="width:50px; margin: 50px auto;">why not?</noscript>
+	<div id="content">
+		<div class="header">
+		    <a class="logo" href="http://marcuswest.in/">marcuswest.in</a><br />
+		    <a class="twitter" href="http://twitter.com/marcuswestin">@marcuswestin</a>
+		</div>
+	    <span class="date">August 10th, 2010</span>
+        <h1>A quick chat app in Fun</h1>
+
+<p>Just a quick sample chat app written in Fun:</p>
+
+<pre><code><span class="xml">&lt;</span>div class=<span class="string">"compose"</span><span class="xml">&gt;</span>
+    <span class="xml">&lt;</span>input <span class="attr">data</span>=<span class="global">Local</span>.compose /<span class="xml">&gt;</span>
+    <span class="xml">&lt;</span>button <span class="attr">onClick</span>=sendMessage<span class="xml">&gt;</span>Send<span class="xml">&lt;</span>/button<span class="xml">&gt;</span>
+<span class="xml">&lt;</span>/div<span class="xml">&gt;</span>
+
+<span class="keyword">let </span>sendMessage<span class="operator"> = </span><span class="type">handler</span>() {
+    <span class="global">Global</span>.messages.push({ user: <span class="global">Session</span>.User, text: <span class="global">Local</span>.compose })
+}
+
+<span class="xml">&lt;</span>div class=<span class="string">"messages"</span><span class="xml">&gt;</span>
+    <span class="keyword">for </span>(message <span class="keyword">in </span><span class="global">Global</span>.messages) {
+        <span class="xml">&lt;</span>div class=<span class="string">"message"</span><span class="xml">&gt;</span>
+            <span class="xml">&lt;</span>img src=message.user.pictureURL /<span class="xml">&gt;</span>
+            message.user.name <span class="string">" says:"</span>
+            <span class="xml">&lt;</span>span class=<span class="string">"text"</span><span class="xml">&gt;</span> message.text <span class="xml">&lt;</span>/span<span class="xml">&gt;</span>
+        <span class="xml">&lt;</span>/div<span class="xml">&gt;</span>
+    }
+<span class="xml">&lt;</span>/div<span class="xml">&gt;</span>
+</code></pre>
+        
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        (function() {
+            window.disqus_identifier = "fun-chat"
+            var doc = document,
+                head = doc.getElementsByTagName('head')[0]
+            
+            head.appendChild(doc.createElement('script')).src='http://marcuswestin.disqus.com/embed.js'
+        })();
+        </script>
+    </div>
+</body>
+</html>
