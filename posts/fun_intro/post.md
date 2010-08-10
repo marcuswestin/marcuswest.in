@@ -10,6 +10,7 @@ To better understand what Fun is, let's first look at what it's not. Fun is not 
 
 Let's say you're building a small task manager. To render all of a user's tasks with PHP you would do something like this (sorry for the weird syntax highlighting):
 
+    // PHP code
     <h1>These are your tasks matey</h1>
     <?php
     $myTasks = sqlQueryGetMyTasks();
@@ -31,6 +32,7 @@ Ok, now let's have some Fun
 
 Here's your first Fun app. It's also a simple task list.
 
+    // Fun code
 	let user = Session.User
 	let myTasks = Query({ type: "task", owner: user.id })
     

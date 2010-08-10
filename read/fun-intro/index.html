@@ -24,7 +24,8 @@
 
 <p>Let's say you're building a small task manager. To render all of a user's tasks with PHP you would do something like this (sorry for the weird syntax highlighting):</p>
 
-<pre><code><span class="xml">&lt;</span>h1<span class="xml">&gt;</span>These are your tasks matey<span class="xml">&lt;</span>/h1<span class="xml">&gt;</span>
+<pre><code>// PHP code
+<span class="xml">&lt;</span>h1<span class="xml">&gt;</span>These are your tasks matey<span class="xml">&lt;</span>/h1<span class="xml">&gt;</span>
 <span class="xml">&lt;</span>?php
 $myTasks<span class="operator"> = </span>sqlQueryGetMyTasks();
 <span class="keyword">for </span>($i<span class="operator"> = </span>0; $i <span class="xml">&lt;</span> sizeof($myTasks); $i++) {
@@ -45,7 +46,8 @@ $myTasks<span class="operator"> = </span>sqlQueryGetMyTasks();
 
 <p>Here's your first Fun app. It's also a simple task list.</p>
 
-<pre><code><span class="keyword">let </span>user<span class="operator"> = </span><span class="global">Session</span>.User
+<pre><code>// Fun code
+<span class="keyword">let </span>user<span class="operator"> = </span><span class="global">Session</span>.User
 <span class="keyword">let </span>myTasks<span class="operator"> = </span>Query({ type: <span class="string">"task"</span>, owner: user.id })
 
 <span class="xml">&lt;</span>h1<span class="xml">&gt;</span><span class="string">"Hello "</span> user.name <span class="string">", these are your tasks matey:"</span><span class="xml">&lt;</span>/h1<span class="xml">&gt;</span>
