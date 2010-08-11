@@ -10,7 +10,7 @@ To better understand what Fun is, let's first look at what it's not. Fun is not 
 
 Let's say you're building a small task manager. To render all of a user's tasks with PHP you would do something like this (sorry for the weird syntax highlighting):
 
-    // PHP code
+    // This is PHP code, to contrast with the Fun code below
     <h1>These are your tasks matey</h1>
     <?php
     $myTasks = sqlQueryGetMyTasks();
@@ -125,11 +125,7 @@ Then navigate to
 
 and you should have your first Fun script running locally!
 
-Stay tuned for lots of exciting progress in the coming couple of weeks.
-
-
-
-
+Stay tuned for lots of exciting progress in the coming couple of weeks. If you want more right now then check out [this page with a chat application example](../fun-chat).
 
   [Fun]:http://github.com/marcuswestin/fun
 
