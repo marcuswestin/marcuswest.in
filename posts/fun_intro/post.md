@@ -43,7 +43,7 @@ Here's your first Fun app. It's also a simple task list.
 			if (task.completed) {
 				<span class="status">"Completed!"</span>
 			} else {
-				<button onClick=markComplete(task)/>"Mark as completed"</button>
+				<button clickHandler=markComplete(task)/>"Mark as completed"</button>
 			}
 		</div>
 	}
@@ -54,12 +54,12 @@ Here's your first Fun app. It's also a simple task list.
 	
 	<h3>"Create a new task"</h3>
 	<input data=Local.newTaskTitle />
-	<button onClick=createNewTask />
+	<button clickHandler=createNewTask />
     
 	let createNewTask = handler() {
-		let taskTitle = Local.newTaskTitle
-		set Local.newTaskTitle = ""
-		Global.create({ owner: user.id, type: "task", title: taskTitle })
+		let title = Local.newTaskTitle
+		Local.newTaskTitle = ""
+		Global.create({ owner: user.id, type: "task", title: title })
 	}
 
 

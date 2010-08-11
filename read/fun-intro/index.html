@@ -57,7 +57,7 @@ $myTasks<span class="operator"> = </span>sqlQueryGetMyTasks();
         <span class="keyword">if </span>(task.completed) {
             <span class="xml">&lt;</span>span class=<span class="string">"status"</span><span class="xml">&gt;</span><span class="string">"Completed!"</span><span class="xml">&lt;</span>/span<span class="xml">&gt;</span>
         } <span class="keyword">else </span>{
-            <span class="xml">&lt;</span>button <span class="attr">onClick</span>=markComplete(task)/<span class="xml">&gt;</span><span class="string">"Mark as completed"</span><span class="xml">&lt;</span>/button<span class="xml">&gt;</span>
+            <span class="xml">&lt;</span>button clickHandler=markComplete(task)/<span class="xml">&gt;</span><span class="string">"Mark as completed"</span><span class="xml">&lt;</span>/button<span class="xml">&gt;</span>
         }
     <span class="xml">&lt;</span>/div<span class="xml">&gt;</span>
 }
@@ -68,12 +68,12 @@ $myTasks<span class="operator"> = </span>sqlQueryGetMyTasks();
 
 <span class="xml">&lt;</span>h3<span class="xml">&gt;</span><span class="string">"Create a new task"</span><span class="xml">&lt;</span>/h3<span class="xml">&gt;</span>
 <span class="xml">&lt;</span>input <span class="attr">data</span>=<span class="global">Local</span>.newTaskTitle /<span class="xml">&gt;</span>
-<span class="xml">&lt;</span>button <span class="attr">onClick</span>=createNewTask /<span class="xml">&gt;</span>
+<span class="xml">&lt;</span>button clickHandler=createNewTask /<span class="xml">&gt;</span>
 
 <span class="keyword">let </span>createNewTask<span class="operator"> = </span><span class="type">handler</span>() {
-    <span class="keyword">let </span>taskTitle<span class="operator"> = </span><span class="global">Local</span>.newTaskTitle
-    set <span class="global">Local</span>.newTaskTitle<span class="operator"> = </span><span class="string">""</span>
-    <span class="global">Global</span>.create({ owner: user.id, type: <span class="string">"task"</span>, title: taskTitle })
+    <span class="keyword">let </span>title<span class="operator"> = </span><span class="global">Local</span>.newTaskTitle
+    <span class="global">Local</span>.newTaskTitle<span class="operator"> = </span><span class="string">""</span>
+    <span class="global">Global</span>.create({ owner: user.id, type: <span class="string">"task"</span>, title: title })
 }
 </code></pre>
 
