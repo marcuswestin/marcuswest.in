@@ -78,7 +78,7 @@ Are these all your ideas? And can I use Fun now?
 
 Nope. And No.
 
-First, credit where it's due! This project is conceptually inspired from conversations with Justin Rosenstein about the language LunaScript that he's building together with Dustin Moskovitz & team at [Asana], and from conversations with Misko Hevery about the HTML compiler [&lt;angular/&gt;] that he's building over at Google.
+First, credit where it's due! This project is conceptually inspired from conversations with Justin Rosenstein about the language [LunaScript] that he's building together with Dustin Moskovitz & team at [Asana], and from conversations with Misko Hevery about the HTML compiler [&lt;angular/&gt;] that he's building over at Google.
 
 And a disclaimer: All the features of Fun used in the example above are not yet implemented. "Vaporware, Vaporware!" you say. Not quite! A significant subset of Fun already parses and compiles correctly, and I'm making fast progress in implementing the remaining features. At this point I can safely say that Fun is a viable project and that you will be able to use it to build realtime web application by the end of the year.
 
@@ -148,7 +148,8 @@ Stay tuned for lots of exciting progress in the coming couple of weeks.
   [redis]:http://code.google.com/p/redis/
 
   [Asana]:http://asana.com
-
+  [LunaScript]:http://asana.com/luna
+  
   [&lt;angular/&gt;]:http://angularjs.org/
 
   [PEG.js]:http://pegjs.majda.cz/
