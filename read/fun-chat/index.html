@@ -19,12 +19,12 @@
 <p>Just a quick sample chat app written in Fun:</p>
 
 <pre><code><span class="xml">&lt;</span>div class=<span class="string">"compose"</span><span class="xml">&gt;</span>
-    <span class="xml">&lt;</span>input <span class="attr">data</span>=<span class="global">Local</span>.compose /<span class="xml">&gt;</span>
-    <span class="xml">&lt;</span>button <span class="attr">onClick</span>=sendMessage<span class="xml">&gt;</span>Send<span class="xml">&lt;</span>/button<span class="xml">&gt;</span>
+    <span class="xml">&lt;</span>input <span class="attr">data</span>=<span class="global">Local</span>.newMessage /<span class="xml">&gt;</span>
+    <span class="xml">&lt;</span>button clickHandler=sendMessage<span class="xml">&gt;</span>Send<span class="xml">&lt;</span>/button<span class="xml">&gt;</span>
 <span class="xml">&lt;</span>/div<span class="xml">&gt;</span>
 
 <span class="keyword">let </span>sendMessage<span class="operator"> = </span><span class="type">handler</span>() {
-    <span class="global">Global</span>.messages.push({ user: <span class="global">Session</span>.User, text: <span class="global">Local</span>.compose })
+    <span class="global">Global</span>.messages.push({ user: <span class="global">Session</span>.User, text: <span class="global">Local</span>.newMessage })
 }
 
 <span class="xml">&lt;</span>div class=<span class="string">"messages"</span><span class="xml">&gt;</span>
@@ -37,6 +37,48 @@
     }
 <span class="xml">&lt;</span>/div<span class="xml">&gt;</span>
 </code></pre>
+
+<p>Let's break it down!</p>
+
+<pre><code><span class="xml">&lt;</span>div class=<span class="string">"compose"</span><span class="xml">&gt;</span>
+    <span class="xml">&lt;</span>input <span class="attr">data</span>=<span class="global">Local</span>.newMessage /<span class="xml">&gt;</span>
+    <span class="xml">&lt;</span>button clickHandler=sendMessage<span class="xml">&gt;</span>Send<span class="xml">&lt;</span>/button<span class="xml">&gt;</span>
+<span class="xml">&lt;</span>/div<span class="xml">&gt;</span>
+</code></pre>
+
+<p>This code emits a text input element and a button to the user. The text input has its <code>data</code> bound to <code>Local.newMessage</code>. What's with the <code>Local</code>? Well, it's a special data object which syncs its properties only with the current page. This means that any other element on this page bound to <code>Local.newMessage</code> will display that value, but Fun won't sync the value across the network with other users.</p>
+
+<p>Next, the button has its <code>clickHandler</code> attribute bound to <code>sendMessage</code>:</p>
+
+<pre><code><span class="keyword">let </span>sendMessage<span class="operator"> = </span><span class="type">handler</span>() {
+    <span class="global">Global</span>.messages.push({ user: <span class="global">Session</span>.User, text: <span class="global">Local</span>.newMessage })
+}
+</code></pre>
+
+<p>This means that whenever the button gets clicked, the sendMessage handler gets called. Fun code running inside of handlers are a little different from other Fun code. Rather than emit HTML they <em>mutate state</em>. This kind of makes sense if you think about it: a handler gets called in response to user input (keystrokes, mouse moves, clicks), and usually when user input happens then something should change. The change could be the position of the cursor, the value of an input box, or in this case add a message to the list of chat messages.</p>
+
+<p>Finally we've got the rendering of all the chat messages:</p>
+
+<pre><code><span class="xml">&lt;</span>div class=<span class="string">"messages"</span><span class="xml">&gt;</span>
+    <span class="keyword">for </span>(message <span class="keyword">in </span><span class="global">Global</span>.messages) {
+</code></pre>
+
+<p>This loop emits for each message in <code>Global.messages</code>. Whenever the <code>sendMessage</code> handler above pushes a message onto this list, the loop will automatically emit again for that item. No controller code needed!</p>
+
+<pre><code>    <span class="xml">&lt;</span>div class=<span class="string">"message"</span><span class="xml">&gt;</span>
+        <span class="xml">&lt;</span>img src=message.user.pictureURL /<span class="xml">&gt;</span>
+        message.user.name <span class="string">" says:"</span>
+        <span class="xml">&lt;</span>span class=<span class="string">"text"</span><span class="xml">&gt;</span> message.text <span class="xml">&lt;</span>/span<span class="xml">&gt;</span>
+    <span class="xml">&lt;</span>/div<span class="xml">&gt;</span>
+</code></pre>
+
+<p>For each message, emit the sender's picture, name, and the message that they wrote.</p>
+
+<pre><code>    }
+<span class="xml">&lt;</span>/div<span class="xml">&gt;</span>
+</code></pre>
+
+<p>Close the loop aaaaand we're done! That's it - a realtime chat app in 16 lines of Fun code.</p>
         
         <div id="disqus_thread"></div>
         <script type="text/javascript">
