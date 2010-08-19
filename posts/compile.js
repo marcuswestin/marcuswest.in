@@ -15,14 +15,15 @@ var posts = fs.readdirSync('./'),
 fs.renameSync('../read/', '/tmp/marcuswest.in-compile-'+new Date().getTime())  // Dump previous compilation
 fs.mkdirSync('../read', 0755)
 
-for (var i=0, post; post = posts[i]; i++) {
-	if (!fs.statSync('./' + post).isDirectory()) { continue }
-	var postInfo = JSON.parse(fs.readFileSync('./' + post + '/info.json')),
-		postMarkdow = fs.readFileSync('./' + post + '/post.md'),
+for (var i=0, postID; postID = posts[i]; i++) {
+	if (!fs.statSync('./' + postID).isDirectory()) { continue }
+	var postInfo = JSON.parse(fs.readFileSync('./' + postID + '/info.json')),
+		postMarkdow = fs.readFileSync('./' + postID + '/post.md'),
 		templateHTML = fs.readFileSync('./template.html'),
 		bodyHTML = markdownConverter.makeHtml(postMarkdow),
 		html
 	
+	postInfo.id = postID
 	postInfo.title = postMarkdow.split("\n")[0]
 	
 	html = templateHTML
