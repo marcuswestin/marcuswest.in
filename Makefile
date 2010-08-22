@@ -1,5 +1,5 @@
 .PHONY: deps
-all: index
+all: index posts
 
 .PHONY: push
 push: index
