@@ -3,7 +3,8 @@ if (__dirname != 'posts') { process.chdir('posts') }
 var fs = require('fs'),
 	sys = require('sys'),
 	Showdown = require('../write/showdown'),
-	funSyntaxHighlighter = require('../lib/funSyntaxHighlighter')
+	funSyntaxHighlighter = require('../lib/funSyntaxHighlighter'),
+	mustache = require('../lib/mustache')
 
 function p(o) { sys.puts(JSON.stringify(o)) }
 function puts(o) { sys.puts(o) }
@@ -17,21 +18,18 @@ fs.mkdirSync('../read', 0755)
 
 for (var i=0, postID; postID = posts[i]; i++) {
 	if (!fs.statSync('./' + postID).isDirectory()) { continue }
-	var postInfo = JSON.parse(fs.readFileSync('./' + postID + '/info.json')),
-		postMarkdow = fs.readFileSync('./' + postID + '/post.md'),
-		templateHTML = fs.readFileSync('./template.html'),
-		bodyHTML = markdownConverter.makeHtml(postMarkdow),
+	var postInfo = JSON.parse(fs.readFileSync('./' + postID + '/info.json').toString()),
+		postMarkdow = fs.readFileSync('./' + postID + '/post.md').toString(),
+		templateHTML = fs.readFileSync('./template.html').toString(),
+		view = {},
 		html
+
+	view.body = markdownConverter.makeHtml(postMarkdow)
+	view.id = postInfo.id = postID
+	view.title = postInfo.title = postMarkdow.split("\n")[0]
+	view.date = postInfo.date
 	
-	postInfo.id = postID
-	postInfo.title = postMarkdow.split("\n")[0]
-	
-	html = templateHTML
-		.replace('#TITLE#', postInfo.title)
-		.replace('#DATE#', '<span class="date">' + postInfo.date + '</span>')
-		.replace('#BODY#', bodyHTML)
-		.replace('#POST_ID#', '"'+postInfo.id+'"')
-	
+	html = mustache.to_html(templateHTML, view)
 	html = syntaxHighlight(html)
 	
 	fs.mkdirSync('../read/' + postInfo.id + '/', 0755)

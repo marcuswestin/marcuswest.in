@@ -1,18 +1,12 @@
-var fs = require('fs')
+var fs = require('fs'),
+	mustache = require('./lib/mustache')
 
-var templateHTML = fs.readFileSync('index_template.html'),
-	posts = JSON.parse(fs.readFileSync('read/posts.json')),
+var templateHTML = fs.readFileSync('index_template.html').toString(),
+	data = {},
 	html
 
-var postsHTML = posts.map(function(post) {
-	return ''
-		+	'<div class="post">'
-		+		'<a class="post" href="read/'+post.id+'/">' + post.title + '</a>\n'
-		+		'<div class="date">' + post.date + '</div>'
-		+	'</div>'
-}).join('<br />')
+data.posts = JSON.parse(fs.readFileSync('read/posts.json').toString())
 
-html = templateHTML
-	.replace('#POSTS#', postsHTML)
+html = mustache.to_html(templateHTML, data)
 
 fs.writeFileSync('index.html', html)

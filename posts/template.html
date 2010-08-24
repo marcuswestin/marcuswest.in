@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>#TITLE#</title>
+    <title>{{ title }}</title>
     <link href="../../index.less" type="text/css" rel="stylesheet/less" />
 	<script src="../../lib/less.js"></script>
 	
@@ -13,13 +13,13 @@
 		    <a class="logo" href="http://marcuswest.in/">marcuswest.in</a><br />
 		    <a class="twitter" href="http://twitter.com/marcuswestin">@marcuswestin</a>
 		</div>
-	    #DATE#
-        #BODY#
+        <span class="date">{{ date }}</span>
+        {{{ body }}}
         
         <div id="disqus_thread"></div>
         <script type="text/javascript">
         (function() {
-            window.disqus_identifier = #POST_ID#
+            window.disqus_identifier = '{{ id }}'
             var doc = document,
                 head = doc.getElementsByTagName('head')[0]
             
