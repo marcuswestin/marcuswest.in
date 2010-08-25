@@ -422,5 +422,13 @@ function initializePostButtons() {
 		rebuildPostsSelect();
 		selectCurrentPost();
 	}
+
+	document.getElementById('savePostButton').onclick = function() {
+		var name = postSelect.value,
+			text = inputPane.value,
+			doc = document;
+		
+		doc.body.appendChild(doc.createElement('img')).src = './save?id=' + name + '&body=' + encodeURIComponent(text)
+	}
 }
 
