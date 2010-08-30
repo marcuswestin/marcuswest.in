@@ -2,6 +2,9 @@
 
 $isPasswordProtected = (file_get_contents('.htaccess') != '');
 
+echo "Disabled for now";
+exit(0);
+
 if ($isPasswordProtected) {
 	$id = $_GET['id'];
 	$text = $_GET['body'];
