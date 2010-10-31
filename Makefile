@@ -3,6 +3,7 @@ all: index posts
 
 .PHONY: push
 push: index
+	git commit
 	git push origin master
 	curl http://marcuswest.in/pull/index.php
 
