@@ -6,6 +6,8 @@ var fs = require('fs'),
 	funSyntaxHighlighter = require('../lib/funSyntaxHighlighter'),
 	mustache = require('../lib/mustache')
 
+require('./date') // date.js modifies the Date prototype
+
 function p(o) { sys.puts(JSON.stringify(o)) }
 function puts(o) { sys.puts(o) }
 
@@ -38,7 +40,7 @@ for (var i=0, postID; postID = posts[i]; i++) {
 	postsInfo.push(postInfo)
 }
 
-postsInfo.sort(function(a,b){ return a.date < b.date ? -1 : 1 })
+postsInfo.sort(function(a,b){ return Date.parse(a.date) > Date.parse(b.date) ? -1 : 1 })
 fs.writeFileSync('../read/posts.json', JSON.stringify(postsInfo))
 
 function syntaxHighlight(html) {
