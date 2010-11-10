@@ -3,8 +3,6 @@ Use showdown with post editor
 
 Use fan for website tasks
 
-Compile less.js to static stylesheet
-
 Add a latest pulled timestamp to pull-git.php, to ensure we don't pull too often
 
 Add link to http://eloquentjavascript.net/
