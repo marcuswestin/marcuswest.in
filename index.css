@@ -7,24 +7,38 @@ html, body {
   -webkit-user-select: none;
   cursor: default;
 }
-#content {
-  width: 600px;
+#landing {
+  width: 800px;
   margin: 50px auto;
 }
-#content .header {
+.header {
   text-align: right;
   -moz-user-select: none;
   -webkit-user-select: none;
   cursor: default;
   margin-bottom: 5px;
 }
-#content .header .logo {
+.header .logo {
   text-decoration: none;
   color: #333;
 }
-#content .header .twitter {
+.header .twitter {
   text-decoration: none;
   color: #666;
+}
+#post {
+  width: 1000px;
+  margin: 50px 0 0 75px;
+}
+#post .body {
+  float: left;
+  width: 600px;
+}
+#post #disqus_thread {
+  float: right;
+  width: 300px;
+  margin-top: 70px;
+  opacity: .8;
 }
 * {
   cursor: default;

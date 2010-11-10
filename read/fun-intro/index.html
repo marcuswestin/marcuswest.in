@@ -1,18 +1,19 @@
 <!doctype html>
 <html>
 <head>
-    <title>Fun (a programming language for the realtime web)</title>
-    <link href="../../index.css" rel="stylesheet" />
+	<title>Fun (a programming language for the realtime web)</title>
+	<link href="../../index.css" rel="stylesheet" />
 </head>
 <body>
-    <noscript style="width:50px; margin: 50px auto;">why not?</noscript>
-	<div id="content">
+	<noscript style="width:50px; margin: 50px auto;">why not?</noscript>
+	<div id="post">
 		<div class="header">
-		    <a class="logo" href="http://marcuswest.in/">marcuswest.in</a><br />
-		    <a class="twitter" href="http://twitter.com/marcuswestin">@marcuswestin</a>
+			<a class="logo" href="http://marcuswest.in/">marcuswest.in</a><br />
+			<a class="twitter" href="http://twitter.com/marcuswestin">@marcuswestin</a>
 		</div>
-        <span class="date">August 8th, 2010</span>
-        <h1>Fun (a programming language for the realtime web)</h1>
+		<div class="body">
+			<span class="date">August 8th, 2010</span>
+			<h1>Fun (a programming language for the realtime web)</h1>
 
 <p>What if you could build realtime web apps with the same ease as you build static web pages in PHP today? Without long polling, event handling and state synchronization, the engineering complexity of realtime web applications would drop by an order of magnitude. There would be a fundamental shift in the way we build the realtime web. This is the future of <a href="http://github.com/marcuswestin/fun">Fun</a>.</p>
 
@@ -136,17 +137,20 @@ make
 <p>and you should have your first Fun script running locally!</p>
 
 <p>Stay tuned for lots of exciting progress in the coming couple of weeks. If you want more right now then check out <a href="../fun-chat">this page with a chat application example</a>.</p>
-        
-        <div id="disqus_thread"></div>
-        <script type="text/javascript">
-        (function() {
-            window.disqus_identifier = 'fun-intro'
-            var doc = document,
-                head = doc.getElementsByTagName('head')[0]
-            
-            head.appendChild(doc.createElement('script')).src='http://marcuswestin.disqus.com/embed.js'
-        })();
-        </script>
-    </div>
+		</div>
+		<div id="disqus_thread"></div>
+		<script type="text/javascript">
+		(function() {
+			window.disqus_identifier = 'fun-intro'
+			var doc = document,
+				head = doc.getElementsByTagName('head')[0]
+			head.appendChild(doc.createElement('script')).src='http://marcuswestin.disqus.com/embed.js'
+			
+			var thread = document.getElementById('disqus_thread');
+			thread.onmouseover = function() { thread.style.opacity = 1; }
+			thread.onmouseout = function() { thread.style.opacity = .8; }
+		})();
+		</script>
+	</div>
 </body>
 </html>
