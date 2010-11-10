@@ -8,8 +8,12 @@ push: index
 	curl http://marcuswest.in/pull/index.php
 
 .PHONY: index
-index: posts
+index: lib/less posts
 	node index_compile.js
+
+lib/less:
+	git clone https://github.com/cloudhead/less.js.git lib/less
+	cd lib/less; git checkout a2807288008587b95c6c #(dist) build 1.0.36
 
 .PHONY: posts
 posts:

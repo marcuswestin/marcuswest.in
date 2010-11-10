@@ -1,12 +1,15 @@
 var fs = require('fs'),
-	mustache = require('./lib/mustache')
+	mustache = require('./lib/mustache'),
+	less = require('./lib/less/lib/less')
 
 var templateHTML = fs.readFileSync('index_template.html').toString(),
 	data = {},
 	html
 
 data.posts = JSON.parse(fs.readFileSync('read/posts.json').toString())
+fs.writeFileSync('index.html', mustache.to_html(templateHTML, data))
 
-html = mustache.to_html(templateHTML, data)
-
-fs.writeFileSync('index.html', html)
+less.render(fs.readFileSync('index.less').toString(), function(e, css) {
+	if (e) { throw e }
+	fs.writeFileSync('index.css', css)
+})
