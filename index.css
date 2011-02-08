@@ -52,6 +52,9 @@ code {
 a {
   cursor: pointer;
 }
+p {
+  line-height: 22px;
+}
 pre {
   padding: 5px 0 3px 7px;
   line-height: 20px;
