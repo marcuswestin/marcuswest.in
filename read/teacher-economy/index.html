@@ -56,6 +56,14 @@ if we gave teachers a fraction of a percentage of her pupils' future earnings?</
 			thread.onmouseover = function() { thread.style.opacity = 1; }
 			thread.onmouseout = function() { thread.style.opacity = .8; }
 		})();
+		
+		// Google analytics
+		var _gaq = [["_setAccount", "UA-21268456-1"], ["_trackPageview"]]
+		setTimeout(function track() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		}, 3000)
 		</script>
 	</div>
 </body>
