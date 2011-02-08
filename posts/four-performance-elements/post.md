@@ -2,8 +2,8 @@ Four elements of web performance
 ================================
 
 
-weight, time, cpu and perception
---------------------------------
+weight, time, processing and perception
+---------------------------------------
 
 When discussing performance on the web, there are exactly four aspects to consider: weight, time, processing and perception. With this post I intend to define a basic vocabulary and to provide differentiation between elemental performance concerns.
 
