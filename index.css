@@ -52,7 +52,7 @@ code {
 a {
   cursor: pointer;
 }
-p {
+p, li {
   line-height: 22px;
 }
 pre {
