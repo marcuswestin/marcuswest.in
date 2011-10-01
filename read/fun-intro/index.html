@@ -24,17 +24,17 @@
 <p>Let's say you're building a small task manager. To render all of a user's tasks with PHP you would do something like this (sorry for the weird syntax highlighting):</p>
 
 <pre><code>// This is PHP code, to contrast with the Fun code below
-<span class="xml">&lt;</span>h1<span class="xml">&gt;</span>These are your tasks matey<span class="xml">&lt;</span>/h1<span class="xml">&gt;</span>
-<span class="xml">&lt;</span>?php
-$myTasks<span class="operator"> = </span>sqlQueryGetMyTasks();
-<span class="keyword">for </span>($i<span class="operator"> = </span>0; $i <span class="xml">&lt;</span> sizeof($myTasks); $i++) {
-    $task<span class="operator"> = </span>$myTasks[$i];
-    $divClass<span class="operator"> = </span><span class="string">"task"</span> . ($task-<span class="xml">&gt;</span>urgent ? <span class="string">" urgent"</span> : <span class="string">""</span>);
-    echo <span class="string">"<span class="xml">&lt;</span>div class=\"</span>$divClass\<span class="string">"<span class="xml">&gt;</span>"</span>
-        . <span class="string">"<span class="xml">&lt;</span>span class=\"</span>title\<span class="string">"<span class="xml">&gt;</span>"</span> . $task-<span class="xml">&gt;</span>title . <span class="string">"<span class="xml">&lt;</span>/span<span class="xml">&gt;</span>"</span>
-        .<span class="string">"<span class="xml">&lt;</span>/div<span class="xml">&gt;</span>"</span>;
+&lt;h1&gt;These are your tasks matey&lt;/h1&gt;
+&lt;?php
+$myTasks = sqlQueryGetMyTasks();
+for ($i = 0; $i &lt; sizeof($myTasks); $i++) {
+    $task = $myTasks[$i];
+    $divClass = "task" . ($task-&gt;urgent ? " urgent" : "");
+    echo "&lt;div class=\"$divClass\"&gt;"
+        . "&lt;span class=\"title\"&gt;" . $task-&gt;title . "&lt;/span&gt;"
+        ."&lt;/div&gt;";
 }
-?<span class="xml">&gt;</span>
+?&gt;
 </code></pre>
 
 <p>If someone creates a new task for our user or marks a task as urgent, our user has to refresh the page to be made aware of the change. Alternatively we write a javascript layer that long/short-polls the server and updates the DOM whenever there is a state change event. However, this is a complex and error prone engineering challenge, both client-side and server-side. </p>
@@ -46,33 +46,33 @@ $myTasks<span class="operator"> = </span>sqlQueryGetMyTasks();
 <p>Here's your first Fun app. It's also a simple task list.</p>
 
 <pre><code>// Fun code
-<span class="keyword">let </span>user<span class="operator"> = </span><span class="global">Session</span>.User
-<span class="keyword">let </span>myTasks<span class="operator"> = </span>Query({ type: <span class="string">"task"</span>, owner: user.id })
+let user = Session.User
+let myTasks = Query({ type: "task", owner: user.id })
 
-<span class="xml">&lt;</span>h1<span class="xml">&gt;</span><span class="string">"Hello "</span> user.name <span class="string">", these are your tasks matey:"</span><span class="xml">&lt;</span>/h1<span class="xml">&gt;</span>
-<span class="keyword">for </span>(task <span class="keyword">in </span>myTasks) {
-    <span class="xml">&lt;</span>div class=<span class="string">"task"</span> + (task.urgent ? <span class="string">" urgent"</span>)<span class="xml">&gt;</span>
-        <span class="xml">&lt;</span>input <span class="attr">data</span>=task.title /<span class="xml">&gt;</span>
-        <span class="keyword">if </span>(task.completed) {
-            <span class="xml">&lt;</span>span class=<span class="string">"status"</span><span class="xml">&gt;</span><span class="string">"Completed!"</span><span class="xml">&lt;</span>/span<span class="xml">&gt;</span>
-        } <span class="keyword">else </span>{
-            <span class="xml">&lt;</span>button clickHandler=markComplete(task)/<span class="xml">&gt;</span><span class="string">"Mark as completed"</span><span class="xml">&lt;</span>/button<span class="xml">&gt;</span>
+&lt;h1&gt;"Hello " user.name ", these are your tasks matey:"&lt;/h1&gt;
+for (task in myTasks) {
+    &lt;div class="task" + (task.urgent ? " urgent")&gt;
+        &lt;input data=task.title /&gt;
+        if (task.completed) {
+            &lt;span class="status"&gt;"Completed!"&lt;/span&gt;
+        } else {
+            &lt;button clickHandler=markComplete(task)/&gt;"Mark as completed"&lt;/button&gt;
         }
-    <span class="xml">&lt;</span>/div<span class="xml">&gt;</span>
+    &lt;/div&gt;
 }
 
-<span class="keyword">let </span>markComplete<span class="operator"> = </span><span class="type">handler</span>(task) {
-    task.completed<span class="operator"> = </span>true
+let markComplete = handler(task) {
+    task.completed = true
 }
 
-<span class="xml">&lt;</span>h3<span class="xml">&gt;</span><span class="string">"Create a new task"</span><span class="xml">&lt;</span>/h3<span class="xml">&gt;</span>
-<span class="xml">&lt;</span>input <span class="attr">data</span>=<span class="global">Local</span>.newTaskTitle /<span class="xml">&gt;</span>
-<span class="xml">&lt;</span>button clickHandler=createNewTask /<span class="xml">&gt;</span>
+&lt;h3&gt;"Create a new task"&lt;/h3&gt;
+&lt;input data=Local.newTaskTitle /&gt;
+&lt;button clickHandler=createNewTask /&gt;
 
-<span class="keyword">let </span>createNewTask<span class="operator"> = </span><span class="type">handler</span>() {
-    <span class="keyword">let </span>title<span class="operator"> = </span><span class="global">Local</span>.newTaskTitle
-    <span class="global">Local</span>.newTaskTitle<span class="operator"> = </span><span class="string">""</span>
-    <span class="global">Global</span>.create({ owner: user.id, type: <span class="string">"task"</span>, title: title })
+let createNewTask = handler() {
+    let title = Local.newTaskTitle
+    Local.newTaskTitle = ""
+    Global.create({ owner: user.id, type: "task", title: title })
 }
 </code></pre>
 
@@ -98,7 +98,7 @@ $myTasks<span class="operator"> = </span>sqlQueryGetMyTasks();
 
 <p><strong>First:</strong> Since the primary purpose of Fun is to emit HTML, any statement with a single literal value implicitly emits that value. No <code>echo</code> or <code>emit</code> needed. Hello World in Fun is about as simple as it can get:</p>
 
-<pre><code><span class="string">"Hello World!"</span>
+<pre><code>"Hello World!"
 </code></pre>
 
 <p><strong>Second:</strong> Fun has syntactical support for XML. Rather than juggling strings with HTML (PHP: <code>$html = "&lt;div class='$class'&gt;Hi&lt;/div&gt;";</code>) or switching context between HTML and logic (PHP: <code>&lt;div class="&lt;?php echo $class ?&gt;"&gt;Hi&lt;/div&gt;</code>), you simply inline the XML that you want to emit as HTML (Fun: <code>&lt;div class=class&gt; "Hi" &lt;/div&gt;</code>)</p>

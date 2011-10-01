@@ -32,7 +32,7 @@
 
 <p>The weight of a webpage is roughly equal to the average size of the response bodies plus two times the average size of the headers, all times the number of HTTP requests:</p>
 
-<pre><code>weight<span class="operator"> = </span>(avg_size(bodies) + avg_size(headers) * 2) * num(requests)
+<pre><code>weight = (avg_size(bodies) + avg_size(headers) * 2) * num(requests)
 </code></pre>
 
 <p>We double <code>avg_size(headers)</code> since the headers go over the wire twice for each request - once for the HTTP request from the client to the server, and once for the HTTP response from the server to the client.</p>
