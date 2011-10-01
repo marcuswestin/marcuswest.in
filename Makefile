@@ -8,7 +8,7 @@ push: index
 	curl http://marcuswest.in/pull/index.php
 
 .PHONY: index
-index: lib/less posts
+index: lib/less posts update-store.js
 	node index_compile.js
 
 lib/less:
@@ -21,11 +21,7 @@ posts:
 
 .PHONY: update-store.js
 update-store.js:
-	curl http://github.com/marcuswestin/store.js/raw/master/store.js > lib/store.js
-
-.PHONY: update-syntaxHighligther.js
-update-funSyntaxHighligther.js:
-	curl http://github.com/marcuswestin/fun/raw/master/syntaxHighlighter.js > lib/funSyntaxHighligther.js
+	curl https://raw.github.com/marcuswestin/store.js/master/store.js > lib/store.js
 
 .PHONY: clean
 clean:
