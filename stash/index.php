@@ -11,7 +11,8 @@
 	
 	$post_data = file_get_contents('php://input');
 	$fp = fopen("stash_$currentTime.json", 'w+');
-	fwrite($fp, $currentTime);
+	$json = file_get_contents('php://input');
+	fwrite($fp, $json);
 	fclose($fp);
 	
 	$fp = fopen('last_stash.time', 'w+');
