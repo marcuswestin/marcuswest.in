@@ -1,0 +1,12 @@
+{
+  "author": "Marcus Westin",
+  "name": "marcuswest.in",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/marcuswestin/marcuswest.in.git"
+  },
+  "dependencies": {
+    "mustache": "0.3.x"
+  }
+}
