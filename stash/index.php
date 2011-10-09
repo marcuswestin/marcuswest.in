@@ -1,15 +1,6 @@
-<!doctype html>
-<head>
-    <style type="text/css">
-        body, html { color: #333; font-family: verdana, sans-serif; font-size: 14px; }
-        #content { width: 250px; margin: 50px auto; }
-        p { margin: 2px; }
-    </style>
-</head>
-<body>
-    <div id="content">
 <?php 
-	$output = array();
+	header('Content-type:application/json');
+	
     $lastStashStr = file_get_contents('last_stash.time');
 	$currentTime = time();
 	
@@ -29,6 +20,3 @@
 	
 	echo '{ "stashed":true }';
 ?>
-    </div>
-</body>
-</html>
