@@ -1,0 +1,1066 @@
+
+<!doctype html>
+<html><head>
+</head><body><script>
+fun = {}
+var __require__ = {}
+;(function() {
+	// /Volumes/Encrypted/code/marcuswestin/fun/node_modules/std/isArray
+	var module = __require__["_1"] = {exports:{}}, exports = module.exports;
+module.exports = (function() {
+	if (Array.isArray && Array.isArray.toString().match('\\[native code\\]')) {
+		return function(obj) {
+			return Array.isArray(obj)
+		}
+	} else {
+		// thanks @kangax http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/
+		return function(obj) {
+			return Object.prototype.toString.call(obj) == '[object Array]'
+		}
+	}
+})();
+
+})()
+
+;(function() {
+	// /Volumes/Encrypted/code/marcuswestin/fun/node_modules/std/isArguments
+	var module = __require__["_2"] = {exports:{}}, exports = module.exports;
+module.exports = function isArguments(obj) {
+  return Object.prototype.toString.call(obj) == '[object Arguments]'
+}
+})()
+
+;(function() {
+	// /Volumes/Encrypted/code/marcuswestin/fun/node_modules/std/each
+	var module = __require__["_3"] = {exports:{}}, exports = module.exports;
+var isArray = __require__["_1"].exports,
+	isArguments = __require__["_2"].exports
+
+module.exports = function(items, ctx, fn) {
+	if (!items) { return }
+	if (!fn) {
+		fn = ctx
+		ctx = this
+	}
+	if (isArray(items) || isArguments(items)) {
+		for (var i=0; i < items.length; i++) {
+			fn.call(ctx, items[i], i)
+		}
+	} else {
+		for (var key in items) {
+			if (!items.hasOwnProperty(key)) { continue }
+			fn.call(ctx, items[key], key)
+		}
+	}
+}
+
+})()
+
+;(function() {
+	// /Volumes/Encrypted/code/marcuswestin/fun/node_modules/std/create
+	var module = __require__["_4"] = {exports:{}}, exports = module.exports;
+var each = __require__["_3"].exports
+// Thanks Douglas Crockford! http://javascript.crockford.com/prototypal.html
+module.exports = function create(obj, extendWithProperties) {
+	function extendObject(result, props) {
+		each(props, function(val, key) {
+			result[key] = val
+		})
+		return result
+	}
+	if (typeof Object.create == 'function') {
+		module.exports = function nativeCreate(obj, extendWithProperties) {
+			return extendObject(Object.create(obj), extendWithProperties)
+		}
+	} else {
+		module.exports = function shimCreate(obj, extendWithProperties) {
+			function F() {}
+			F.prototype = obj
+			return extendObject(new F(), extendWithProperties)
+		}
+	}
+	return module.exports(obj, extendWithProperties)
+}
+
+})()
+
+;(function() {
+	// /Volumes/Encrypted/code/marcuswestin/fun/node_modules/std/proto
+	var module = __require__["_5"] = {exports:{}}, exports = module.exports;
+/* 
+	// Usage: proto(prototypeObj, intantiatingFn, properties)
+	
+	var base = {
+		say:function(arg) { alert(arg) }
+	}
+
+	var person = proto(base,
+		function(name) {
+			this.name = name
+		}, {
+			greet:function(other) {
+				this.say("hello "+other.name+", I'm "+this.name)
+			}
+		}
+	)
+	
+	var marcus = person("marcus"),
+		john = person("john")
+
+	marcus.greet(john)
+*/
+
+var create = __require__["_4"].exports,
+	each = __require__["_3"].exports
+
+var proto = module.exports = function proto(prototypeObject, instantiationFunction, propertiesToAdd) {
+	// F is the function thatÂ is required in order to implement JS prototypical inheritence
+	function F(args) {
+		// When a new object is created, call the instantiation function
+		return instantiationFunction.apply(this, args)
+	}
+	// The prototype object itself points to the passed-in prototypeObject,
+	// but also has all the properties enumerated in propertiesToAdd
+	F.prototype = create(prototypeObject, propertiesToAdd)
+	
+	return function() {
+		return new F(arguments)
+	}
+}
+
+})()
+
+;(function() {
+	// /Volumes/Encrypted/code/marcuswestin/fun/node_modules/std/map
+	var module = __require__["_6"] = {exports:{}}, exports = module.exports;
+var each = __require__["_3"].exports
+
+module.exports = function(items, ctx, fn) {
+	var result = []
+	if (!fn) {
+		fn = ctx
+		ctx = this
+	}
+	each(items, ctx, function(item, key) {
+		result.push(fn.call(ctx, item, key))
+	})
+	return result
+}
+
+})()
+
+;(function() {
+	// /Volumes/Encrypted/code/marcuswestin/fun/node_modules/std/slice
+	var module = __require__["_7"] = {exports:{}}, exports = module.exports;
+/*
+	Example usage:
+
+	function log(category, arg1, arg2) { // arg3, arg4, ..., argN
+		console.log('log category', category, std.slice(arguments, 1))
+	}
+*/
+module.exports = function args(args, offset, length) {
+	if (typeof length == 'undefined') { length = args.length }
+	return Array.prototype.slice.call(args, offset || 0, length)
+}
+
+
+})()
+
+;(function() {
+	// /Volumes/Encrypted/code/marcuswestin/fun/node_modules/std/bind
+	var module = __require__["_8"] = {exports:{}}, exports = module.exports;
+/*
+	Example usage:
+
+	function Client() {
+		this._socket = new Connection()
+		this._socket.open()
+		this._socket.on('connected', bind(this, '_log', 'connected!'))
+		this._socket.on('connected', bind(this, 'disconnect'))
+	}
+
+	Client.prototype._log = function(message) {
+		console.log('client says:', message)
+	}
+
+	Client.prototype.disconnect = function() {
+		this._socket.disconnect()
+	}
+
+	Example usage:
+
+	var Toolbar = Class(function() {
+		
+		this.init = function() {
+			this._buttonWasClicked = false
+		}
+		
+		this.addButton = function(clickHandler) {
+			this._button = new Button()
+			this._button.on('Click', bind(this, '_onButtonClick', clickHandler))
+		}
+
+		this._onButtonClick = function(clickHandler) {
+			this._buttonWasClicked = true
+			clickHandler()
+		}
+
+	})
+
+*/
+var slice = __require__["_7"].exports
+
+module.exports = function bind(context, method /* curry1, curry2, ... curryN */) {
+	if (typeof method == 'string') { method = context[method] }
+	var curryArgs = slice(arguments, 2)
+	return function bound() {
+		var invocationArgs = slice(arguments)
+		return method.apply(context, curryArgs.concat(invocationArgs))
+	}
+}
+
+
+})()
+
+;(function() {
+	// /Volumes/Encrypted/code/marcuswestin/fun/src/runtime/expressions
+	var module = __require__["_9"] = {exports:{}}, exports = module.exports;
+var proto = __require__["_5"].exports,
+	create = __require__["_4"].exports,
+	map = __require__["_6"].exports,
+	isArray = __require__["_1"].exports,
+	each = __require__["_3"].exports,
+	bind = __require__["_8"].exports
+
+/* Value bases
+ *************/
+var base = module.exports.base = {
+	observe:function(callback) { callback() },
+	asJSON:function() { return this.asLiteral() },
+	isTruthy:function() { return true },
+	getters:{
+		copy:function() {
+			var self = this
+			return module.exports.Function(function(yieldValue) {
+				yieldValue(self.getContent())
+			})
+		}
+	}
+}
+
+var constantAtomicBase = create(base, {
+	inspect:function() { return '<'+this._type+' ' + this.asLiteral() + '>' },
+	getType:function() { return this._type },
+	evaluate:function() { return this },
+	isAtomic:function() { return true },
+	isMutable:function() { return false },
+	asString:function() { return this._content.toString() },
+	equals:function(that) { return (this.getType() == that.getType() && this.getContent() == that.getContent()) ? Yes : No },
+	isInvocable:function() { return false },
+	getContent:function() { return this._content },
+	hasVariableContent:function() { return false },
+	dismiss:function(id) { /* This function intentionally left blank */  }
+})
+
+var invocableBase = create(constantAtomicBase, {
+	asLiteral:function() { return '<block>' },
+	isInvocable: function() { return true }
+})
+
+var variableValueBase = create(base, {
+	isAtomic:function() { return this.evaluate().isAtomic() },
+	getType:function() { return this.evaluate().getType() },
+	asString:function() { return this.evaluate().asString() },
+	asLiteral:function() { return this.evaluate().asLiteral() },
+	equals:function(that) { return this.evaluate().equals(that) },
+	getContent:function() { return this.evaluate().getContent() },
+	isTruthy:function() { return this.evaluate().isTruthy() },
+	hasVariableContent:function() { return true }
+})
+
+var mutableBase = create(variableValueBase, {
+	isMutable:function() { return true },
+	notifyObservers:function() { each(this.observers, function(observer) { observer() }) },
+	observe:function(callback) {
+		var uniqueID = 'u'+_unique++
+		this.observers[uniqueID] = callback
+		callback()
+		return uniqueID
+	},
+	dismiss:function(uniqueID) {
+		if (!this.observers[uniqueID]) {
+			throw new Error("Tried to dismiss an observer by incorrect ID")
+		}
+		delete this.observers[uniqueID]
+	},
+	onNewValue:function(oldValue, observationId, newValue) {
+		if (oldValue && oldValue.hasVariableContent()) {
+			oldValue.dismiss(observationId)
+		}
+		if (newValue.hasVariableContent()) {
+			return newValue.observe(bind(this, this.notifyObservers))
+		} else {
+			this.notifyObservers()
+		}
+	}
+})
+
+var collectionBase = create(mutableBase, {
+	isAtomic:function() { return false },
+	getType:function() { return this._type },
+	evaluate:function() { return this },
+	getContent:function() { return this._content },
+	isTruthy:function() { return true },
+	set:function(chain, value) {
+		if (!chain || !chain.length) {
+			throw new Error("Attempted setting collection property without a chain")
+		}
+		var prop = chain[0]
+		if (chain.length == 1) {
+			var oldValue = this._content[prop]
+			this._content[prop] = value
+			this._observationIDs[prop] = this.onNewValue(oldValue, this._observationIDs[prop], value)
+		} else if (!this._content[prop]) {
+			throw new Error('Attempted to set the value of a null property')
+		} else if (!this._content[prop].isMutable()) {
+			throw new Error("Attempted to set the value of a non-mutable property")
+		} else {
+			this._content[prop].set(chain.slice(1), value)
+		}
+	}
+})
+
+/* Atomic, immutable expressions
+ *******************************/
+var Number = module.exports.Number = proto(constantAtomicBase,
+	function(content) {
+		if (typeof content != 'number') { TypeMismatch }
+		this._content = content
+	}, {
+		_type:'Number',
+		asLiteral:function() { return this._content },
+		isTruthy: function() { return this._content != 0 }
+	}
+)
+
+var Text = module.exports.Text = proto(constantAtomicBase,
+	function(content) {
+		if (typeof content != 'string') { TypeMismatch }
+		this._content = content
+	}, {
+		_type:'Text',
+		asLiteral:function() { return '"'+this._content+'"' }
+	}
+)
+
+var Logic = module.exports.Logic = function(content) {
+	if (typeof content != 'boolean') { TypeMismatch }
+	return content ? Yes : No
+}
+
+var LogicProto = proto(constantAtomicBase,
+	function(content) {
+		this._content = content
+	}, {
+		_type:'Logic',
+		asString:function() { return this._content ? 'yes' : 'no' },
+		asLiteral:function() { return this._content ? 'true' : 'false' },
+		isTruthy:function() { return this._content }
+	}
+)
+
+var Yes = module.exports.Yes = LogicProto(true),
+	No = module.exports.No = LogicProto(false)
+
+var NullValue = (proto(constantAtomicBase,
+	function() {
+		if (arguments.length) { TypeMismatch }
+	}, {
+		_type:'Null',
+		inspect:function() { return '<Null>' },
+		asString:function() { return '' },
+		equals:function(that) { return that.getType() == 'Null' ? Yes : No },
+		asLiteral:function() { return 'null' },
+		isTruthy:function() { return false }
+	}
+))();
+
+module.exports.Null = function() { return NullValue }
+
+module.exports.Function = proto(invocableBase,
+	function(block) {
+		if (typeof block != 'function') { TypeMismatch }
+		this._content = block
+	}, {
+		_type:'Function',
+		invoke:function(args) {
+			var invocationValue = variable(NullValue)
+			var yieldValue = function(value) { invocationValue.set(null, fromJsValue(value)) }
+			var __hackFirstExecution = true
+			var executeBlock = bind(this, function() {
+				var isFirstExecution = __hackFirstExecution
+				__hackFirstExecution = false
+				this._content.apply(this, [yieldValue, isFirstExecution].concat(args))
+			})
+			if (args.length) {
+				each(args, function(arg) {
+					arg.observe(executeBlock)
+				})
+			} else {
+				executeBlock()
+			}
+			return invocationValue
+		}
+	}
+)
+
+module.exports.Handler = proto(invocableBase,
+	function(block) {
+		if (typeof block != 'function') { TypeMismatch }
+		this._content = block
+	}, {
+		_type:'Handler',
+		invoke:function(e) {
+			var event = fromJsValue({ keyCode:e.keyCode, type:e.type })
+			this._content.call(this, event)
+		}
+	}
+)
+
+
+/* Variable value expressions
+ ****************************/
+var composite = module.exports.composite = proto(variableValueBase,
+	function(left, operator, right) {
+		if (typeof operator != 'string') { TypeMismatch }
+		// TODO typecheck left and right
+		this.left = left
+		this.right = right
+		this.operator = operator
+	}, {
+		_type:'composite',
+		evaluate:function() { return operators[this.operator](this.left, this.right) },
+		observe:function(callback) {
+			this._leftId = this.left.observe(callback)
+			this._rightId = this.right.observe(callback)
+		},
+		dismiss:function() {
+			this.left.dismiss(this._leftId)
+			this.right.dismiss(this._rightId)
+		}
+	}
+)
+
+module.exports.ternary = proto(variableValueBase,
+	function(condition, ifValue, elseValue) {
+		this.condition = condition
+		this.ifValue = ifValue
+		this.elseValue = elseValue
+	}, {
+		_type:'ternary',
+		evaluate:function() { return this.condition.getContent() ? this.ifValue.evaluate() : this.elseValue.evaluate() },
+		observe:function(callback) {
+			this._conditionId = this.condition.observe(callback)
+			this._ifValueId = this.ifValue.observe(callback)
+			this._elseValueId = this.elseValue.observe(callback)
+		},
+		dismiss:function() {
+			this.condition.dismiss(this._conditionID)
+			this.ifValue.dismiss(this._ifValueId)
+			this.elseValue.dismiss(this._elseValueId)
+		}
+	})
+
+module.exports.unary = proto(variableValueBase,
+	function(operator, value) {
+		this.operator = operator
+		this.value = value
+	}, {
+		_type:'unary',
+		evaluate:function() { return unaryOperators[this.operator](this.value.evaluate()) },
+		observe:function(callback) { this._valueId = this.value.observe(callback) },
+		dismiss:function() { this.value.dismiss(this._valueId) }
+	})
+
+var unaryOperators = {
+	'!': function not(value) { return Logic(!value.isTruthy()) }
+}
+
+var operators = {
+	'+': add,
+	'-': subtract,
+	'=': equals,
+	'==': equals, // I wonder if we should make this just = in the fun source, since we don't allow for assignment in mutating statements...
+	'>=': greaterThanOrEquals,
+	'<=': lessThanOrEquals,
+	'<': lessThan,
+	'>': greaterThan
+}
+
+function add(left, right) {
+	if (left.getType() == 'Number' && right.getType() == 'Number') {
+		return Number(left.getContent() + right.getContent())
+	}
+	return Text(left.asString() + right.asString())
+}
+
+function subtract(left, right) {
+	if (left.getType() == 'Number' && right.getType() == 'Number') {
+		return Number(left.getContent() - right.getContent())
+	} else {
+		return NullValue
+	}
+}
+
+
+function equals(left, right) {
+	return left.equals(right)
+}
+
+function greaterThanOrEquals(left, right) {
+	// TODO Typecheck?
+	return Logic(left.getContent() >= right.getContent())
+}
+
+function lessThanOrEquals(left, right) {
+	// TODO Typecheck?
+	return Logic(left.getContent() <= right.getContent())
+}
+
+function lessThan(left, right) {
+	// TODO Typecheck?
+	return Logic(left.getContent() < right.getContent())
+}
+
+function greaterThan(left, right) {
+	// TODO Typecheck?
+	return Logic(left.getContent() > right.getContent())
+}
+
+/* Variable and mutable value expressions
+ ****************************************/
+var _unique = 1
+var variable = module.exports.variable = proto(mutableBase,
+	function(content) {
+		this.observers = {}
+		this.set(null, content)
+	}, {
+		_type:'variable',
+		evaluate:function() { return this._content.evaluate() },
+		inspect:function() { return '<variable '+this._content.inspect()+'>' },
+		asString:function() { return this._content.asString() },
+		asLiteral:function() { return this._content.asLiteral() },
+		equals:function(that) { return this._content.equals(that) },
+		push:function(chain, value) { this._content.push(chain, value) },
+		notifyObservers:function() { each(this.observers, function(observer, id) { observer() }) },
+		set:function(chain, value) {
+			if (!chain || !chain.length) {
+				var oldValue = this._content
+				this._content = value
+				this._observationID = this.onNewValue(oldValue, this._observationID, value)
+			} else if (!this._content.isMutable()) {
+				throw new Error("Attempted to set the value of a non-mutable property")
+			} else {
+				this._content.set(chain, value)
+			}
+		}
+	}
+)
+
+var reference = module.exports.reference = proto(variableValueBase,
+	function(content, chain) {
+		this._content = content
+		this._chain = chain
+	}, {
+		_type:'reference',
+		getType:function() { return this.evaluate().getType() },
+		inspect:function() { return '<Reference '+this._chain.join('.')+' '+this._content.inspect()+'>' },
+		observe:function(callback) { return this._content.observe(callback) },
+		equals:function(that) { return this.evaluate().equals(that) },
+		dismiss:function(observationId) { this._content.dismiss(observationId) },
+		set:function(chain, toValue) {
+			chain = (this._chain && chain) ? (this._chain.concat(chain)) : (this._chain || chain)
+			return this._content.set(chain, toValue)
+		},
+		evaluate:function() {
+			var value = this._content.evaluate()
+			for (var i=0; i<this._chain.length; i++) {
+				var prop = this._chain[i]
+				if (value.getters[prop]) {
+					value = value.getters[prop].call(value)
+				} else if (value.isAtomic()) {
+					return NullValue
+				} else if (!value._content[prop]) {
+					return NullValue
+				} else {
+					value = value._content[prop].evaluate()
+				}
+			}
+			return value
+		}
+	}
+)
+
+var Dictionary = module.exports.Dictionary = proto(collectionBase,
+	function(content) {
+		if (typeof content != 'object' || isArray(content) || content == null) { TypeMismatch }
+		this.observers = {}
+		this._observationIDs = {}
+		this._content = {}
+		each(content, bind(this, function(val, key) { this.set([key], val) }))
+	}, {
+		_type:'Dictionary',
+		asLiteral:function() { return '{ '+map(this._content, function(val, key) { return '"'+key+'":'+val.asLiteral() }).join(', ')+' }' },
+		asString:function() { return this.asLiteral() },
+		inspect:function() { return '<Dictionary { '+map(this._content, function(val, key) { return '"'+key+'":'+val.inspect() }).join(', ')+' }>' },
+		iterate:__interimIterationFunction,
+		equals:function(that) {
+			that = that.evaluate()
+			if (that._type != this._type) {
+				return No
+			}
+			for (var key in this._content) {
+				if (that._content[key] && that._content[key].equals(this._content[key])) { continue }
+				return No
+			}
+			for (var key in that._content) {
+				if (this._content[key] && this._content[key].equals(that._content[key])) { continue }
+				return No
+			}
+			return Yes
+		}
+	}
+)
+
+var List = module.exports.List = proto(collectionBase,
+	function(content) {
+		if (!isArray(content)) { TypeMismatch }
+		this.observers = {}
+		this._observationIDs = {}
+		this._content = []
+		each(content, bind(this, function(val, key) { this.set([key], val) }))
+	}, {
+		_type:'List',
+		asLiteral:function() { return '[ '+map(this._content, function(val) { return val.asLiteral() }).join(', ')+' ]' },
+		asString:function() { return this.asLiteral() },
+		inspect:function() { return '<List [ '+map(this._content, function(val) { return val.inspect() }).join(', ')+' ]>' },
+		push:function(chain, value) { this.set([this._content.length], value) },
+		iterate:__interimIterationFunction,
+		equals:function(that) {
+			that = that.evaluate()
+			if (that._type != this._type) {
+				return No
+			}
+			if (that._content.length != this._content.length) {
+				return No
+			}
+			for (var i=0; i<this._content.length; i++) {
+				if (that._content[i].equals(this._content[key])) { continue }
+				return No
+			}
+			return Yes
+		},
+		getters:{
+			length:function() {
+				var variableLength = variable(NullValue)
+				this.observe(bind(this, function() {
+					variableLength.set(null, Number(this._content.length))
+				}))
+				return variableLength
+			}
+		},
+	}
+)
+
+function __interimIterationFunction(yieldFn) {
+	console.log("Figure out how to do iteration properly")
+	each(this._content, yieldFn)
+}
+
+/* Util
+ ******/
+var fromJsValue = module.exports.fromJsValue = module.exports.value = function(val) {
+	switch (typeof val) {
+		case 'string': return Text(val)
+		case 'number': return Number(val)
+		case 'boolean': return Logic(val)
+		case 'object':
+			if (base.isPrototypeOf(val)) { return val }
+			if (val == null) {
+				return NullValue
+			}
+			if (isArray(val)) {
+				var content = map(val, fromJsValue)
+				return List(content)
+			}
+			var content = {}
+			each(val, function(contentVal, contentName) {
+				content[contentName] = fromJsValue(contentVal)
+			})
+			return Dictionary(content)
+	}
+}
+
+module.exports.fromJSON = function(json) {
+	try { var jsValue = JSON.parse(json) }
+	catch(e) { return NullValue }
+	return fromJsValue(jsValue)
+}
+
+})()
+
+;(function() {
+	// /Volumes/Encrypted/code/marcuswestin/fun/node_modules/std/curry
+	var module = __require__["_10"] = {exports:{}}, exports = module.exports;
+var slice = __require__["_7"].exports
+
+module.exports = function curry(fn /* arg1, arg2, ... argN */) {
+	var curryArgs = slice(arguments, 1)
+	return function curried() {
+		var invocationArgs = slice(arguments)
+		return fn.apply(this, curryArgs.concat(invocationArgs))
+	}
+}
+
+
+})()
+
+;(function() {
+	// /Volumes/Encrypted/code/marcuswestin/fun/node_modules/std/throttle
+	var module = __require__["_11"] = {exports:{}}, exports = module.exports;
+var unique = 0
+module.exports = function throttle(fn, delay) {
+	if (typeof delay != 'number') { delay = 50 }
+	var timeoutName = '__throttleTimeout__' + (++unique)
+	return function throttled() {
+		if (this[timeoutName]) { return }
+		var args = arguments, self = this
+		this[timeoutName] = setTimeout(function fireDelayed() {
+			delete self[timeoutName]
+			fn.apply(self, args)
+		}, delay)
+		fn.apply(self, args)
+	}
+}
+
+})()
+
+;(function() {
+	// /Volumes/Encrypted/code/marcuswestin/fun/src/runtime/library.js
+	var module = __require__["_0"] = {exports:{}}, exports = module.exports;
+var expressions = __require__["_9"].exports,
+	each = __require__["_3"].exports,
+	curry = __require__["_10"].exports,
+	throttle = __require__["_11"].exports
+
+;(function() {
+	if (typeof fun == 'undefined') { fun = {} }
+	var _unique, _hooks, _hookCallbacks
+	
+	fun.reset = function() {
+		_unique = 0
+		_hooks = {}
+		_hookCallbacks = {}
+	}
+	
+	fun.name = function(readable) { return '_' + (readable || '') + '_' + (_unique++) }
+
+	fun.expressions = expressions
+	
+	fun.invoke = function(operand, args) {
+		var evaluatedOperand = operand.evaluate()
+		if (!evaluatedOperand.isInvocable()) {
+			throw new Error('Attempted to invoke a non-invocable: '+operand.inspect())
+		}
+		return evaluatedOperand.evaluate().invoke(args)
+	}
+/* Values
+ ********/
+	fun.emit = function(parentHookName, value) {
+		var hookName = fun.hook(fun.name(), parentHookName)
+		value.observe(function() {
+			_hooks[hookName].innerHTML = ''
+			_hooks[hookName].appendChild(document.createTextNode(value.asString()))
+		})
+	}
+	
+/* Hooks
+ *******/
+	fun.setHook = function(name, dom) { _hooks[name] = dom }
+	fun.hook = function(name, parentName, opts) {
+		if (_hooks[name]) { return name }
+		opts = opts || {}
+		var parent = _hooks[parentName],
+			hook = _hooks[name] = document.createElement(opts.tagName || 'hook')
+		
+		for (var key in opts.attrs) { fun.attr(name, key, opts.attrs[key]) }
+		
+		if (_hookCallbacks[name]) {
+			for (var i=0, callback; callback = _hookCallbacks[name][i]; i++) {
+				callback(hook)
+			}
+		}
+		
+		if (!parent.childNodes.length || !opts.prepend) { parent.appendChild(hook) }
+		else { parent.insertBefore(hook, parent.childNodes[0]) }
+		
+		return name
+	}
+	fun.destroyHook = function(hookName) {
+		if (!_hooks[hookName]) { return }
+		_hooks[hookName].innerHTML = ''
+	}
+	fun.withHook = function(hookName, callback) {
+		if (_hooks[hookName]) { return callback(_hooks[hookName]) }
+		else if (_hookCallbacks[hookName]) { _hookCallbacks[hookName].push(callback) }
+		else { _hookCallbacks[hookName] = [callback] }
+	}
+
+	fun.attr = function(hookName, key, value) {
+		if (key == 'data') {
+			fun.reflectInput(hookName, value)
+			return
+		}
+		value.observe(function() {
+			if (match = key.match(/^on(\w+)$/)) {
+				// Todo remove event listeners
+				var eventName = match[1].toLowerCase()
+				fun.on(_hooks[hookName], eventName, function(e) {
+					value.invoke(e)
+				})
+			} else if (match = key.match(/^style\.(\w+)$/)) {
+				fun.setStyle(hookName, match[1], value)
+			} else if (key == 'style') {
+				each(value.getContent(), function(val, key) {
+					fun.setStyle(hookName, key, val)
+				})
+			} else {
+				_hooks[hookName].setAttribute(key, value.getContent())
+			}
+		})
+	}
+
+	fun.setStyle = function(hookName, key, value) {
+		var rawValue = value.evaluate().asString()
+		if (value.getType() == 'Number' || rawValue.match(/^\d+$/)) { rawValue = rawValue + 'px' }
+		if (key == 'float') { key = 'cssFloat' }
+		_hooks[hookName].style[key] = rawValue
+	}
+	
+	fun.on = function(element, eventName, handler) {
+		if (element.addEventListener) {
+			element.addEventListener(eventName, handler, false)
+		} else if (element.attachEvent){
+			element.attachEvent("on"+eventName, handler)
+		}
+	}
+	
+	fun.reflectInput = function(hookName, property) {
+		var input = _hooks[hookName]
+		if (input.type == 'checkbox') {
+			property.observe(function() {
+				input.checked = property.getContent() ? true : false
+			})
+			fun.on(input, 'change', function() {
+				setTimeout(function() {
+					property.set(null, input.checked ? fun.expressions.Yes : fun.expressions.No)
+				})
+			})
+		} else {
+			property.observe(function() {
+				input.value = property.evaluate().asString()
+			})
+			fun.on(input, 'keypress', function(e) {
+				var oldValue = input.value
+				setTimeout(function() {
+					var value = input.value
+					property.set(null, fun.expressions.Text(input.value))
+					input.value = value
+				}, 0)
+			})
+		}
+	}
+
+/* init & export
+ ***************/
+	fun.reset()
+	if (typeof module != 'undefined') { module.exports = fun }
+})()
+
+})()
+;(function funApp() {
+	var _ROOT_HOOK_0 = fun.name("rootHook")
+	fun.setHook(_ROOT_HOOK_0, document.body)
+	/*********************************************************************************
+ * Module: /Volumes/Encrypted/code/marcuswestin/fun/src/Modules/localstorage.fun *
+ *********************************************************************************/
+	var __variableName__localstorage = fun.expressions.variable( fun.expressions.Dictionary({ "persist":
+	fun.expressions.Function(function block(yieldValue, __hackFirstExecution, __variableName__variable, __variableName__name) {
+		;(function(){
+			var variable=__variableName__variable, name=__variableName__name;
+		/* START INLINE JAVASCRIPT */
+ if (!__hackFirstExecution) { return }
+ var key = name.getContent(),
+ persistedJSON = localStorage.getItem(key)
+ if (persistedJSON && persistedJSON != "null") {
+ variable.set(null, fun.expressions.fromJSON(persistedJSON))
+ }
+ variable.observe(function() {
+ localStorage.setItem(key, variable.asJSON())
+ })
+		/* END INLINE JAVASCRIPT */
+		})()
+	}) }))
+/***************************************************************************
+ * Module: /Volumes/Encrypted/code/marcuswestin/fun/src/Modules/filter.fun *
+ ***************************************************************************/
+	var __variableName__filter = fun.expressions.variable(
+	fun.expressions.Function(function block(yieldValue, __hackFirstExecution, __variableName__list, __variableName__func) {
+		;(function(){
+			var list=__variableName__list, func=__variableName__func;
+		/* START INLINE JAVASCRIPT */
+ var result = [],
+ items = list.getContent()
+ for (var i=0, item; item=items[i]; i++) {
+ if (func.invoke([item]).isTruthy()) {
+ result.push(item)
+ }
+ }
+ yieldValue(result)
+		/* END INLINE JAVASCRIPT */
+		})()
+	}))
+	var __variableName__tasks = fun.expressions.variable( fun.expressions.List([  ]))
+	fun.emit(_ROOT_HOOK_0,  fun.invoke( fun.expressions.reference(__variableName__localstorage, ["persist"]), [__variableName__tasks, fun.expressions.Text("todo-fun")], ""))
+	var _XML_HOOK_1 = fun.name()
+	fun.hook(_XML_HOOK_1, _ROOT_HOOK_0, { tagName:"link", attrs:{ "rel": fun.expressions.Text("stylesheet"), "type": fun.expressions.Text("text/css"), "href": fun.expressions.Text("http://addyosmani.github.com/todomvc/reference-examples/vanillajs/css/todos.css") } })
+	var _XML_HOOK_2 = fun.name()
+	fun.hook(_XML_HOOK_2, _ROOT_HOOK_0, { tagName:"div", attrs:{ "id": fun.expressions.Text("todoapp") } })
+		var _XML_HOOK_3 = fun.name()
+		fun.hook(_XML_HOOK_3, _XML_HOOK_2, { tagName:"div", attrs:{ "class": fun.expressions.Text("title") } })
+			var _XML_HOOK_4 = fun.name()
+			fun.hook(_XML_HOOK_4, _XML_HOOK_3, { tagName:"h1", attrs:{  } })
+				fun.emit(_XML_HOOK_4,  fun.expressions.Text("Todos"))
+		var _XML_HOOK_5 = fun.name()
+		fun.hook(_XML_HOOK_5, _XML_HOOK_2, { tagName:"div", attrs:{ "class": fun.expressions.Text("content") } })
+			var _XML_HOOK_6 = fun.name()
+			fun.hook(_XML_HOOK_6, _XML_HOOK_5, { tagName:"div", attrs:{ "id": fun.expressions.Text("create-todo") } })
+				var __variableName__newTaskName = fun.expressions.variable( fun.expressions.Null(null))
+				var _XML_HOOK_7 = fun.name()
+				fun.hook(_XML_HOOK_7, _XML_HOOK_6, { tagName:"input", attrs:{ "id": fun.expressions.Text("new-todo"), "data":__variableName__newTaskName, "placeholder": fun.expressions.Text("What needs to be done?"), "onkeypress":
+				fun.expressions.Handler(function block(__variableName__event) {
+					;(function(ifBranch, elseBranch) {
+						 fun.expressions.composite( fun.expressions.reference(__variableName__event, ["keyCode"]), "==",  fun.expressions.Number(13)).isTruthy() ? ifBranch() : elseBranch()
+					})(
+						function ifBranch(){
+						__variableName__tasks.push(null,  fun.expressions.Dictionary({ "name": fun.invoke( fun.expressions.reference(__variableName__newTaskName, ["copy"]), [], ""), "done": fun.expressions.Logic(false) }))
+						__variableName__newTaskName.set(null,  fun.expressions.Text(""))
+						},
+						function elseBranch(){
+							null
+						}
+					)
+				}) } })
+			var _XML_HOOK_8 = fun.name()
+			fun.hook(_XML_HOOK_8, _XML_HOOK_5, { tagName:"div", attrs:{ "id": fun.expressions.Text("todos") } })
+				var _XML_HOOK_9 = fun.name()
+				fun.hook(_XML_HOOK_9, _XML_HOOK_8, { tagName:"ul", attrs:{ "id": fun.expressions.Text("todo-list") } })
+					var _FOR_LOOP_HOOK_11 = fun.name()
+					fun.hook(_FOR_LOOP_HOOK_11, _XML_HOOK_9)
+					__variableName__tasks.observe(function() {
+						fun.destroyHook(_FOR_LOOP_HOOK_11)
+						__variableName__tasks.evaluate().iterate(function(__variableName__task) {
+							var _FOR_LOOP_EMIT_HOOK_10 = fun.name()
+							fun.hook(_FOR_LOOP_EMIT_HOOK_10, _FOR_LOOP_HOOK_11)
+						var _XML_HOOK_12 = fun.name()
+						fun.hook(_XML_HOOK_12, _FOR_LOOP_EMIT_HOOK_10, { tagName:"li", attrs:{ "class": fun.expressions.composite( fun.expressions.Text("todo"), "+",  fun.expressions.ternary( fun.expressions.reference(__variableName__task, ["done"]),  fun.expressions.Text(" done"),  fun.expressions.Text(""))) } })
+							var _XML_HOOK_13 = fun.name()
+							fun.hook(_XML_HOOK_13, _XML_HOOK_12, { tagName:"input", attrs:{ "class": fun.expressions.Text("check"), "type": fun.expressions.Text("checkbox"), "data": fun.expressions.reference(__variableName__task, ["done"]) } })
+							var _XML_HOOK_14 = fun.name()
+							fun.hook(_XML_HOOK_14, _XML_HOOK_12, { tagName:"div", attrs:{ "class": fun.expressions.Text("todo-content") } })
+								fun.emit(_XML_HOOK_14,  fun.expressions.reference(__variableName__task, ["name"]))
+						})
+					})
+			var _XML_HOOK_15 = fun.name()
+			fun.hook(_XML_HOOK_15, _XML_HOOK_5, { tagName:"div", attrs:{ "id": fun.expressions.Text("todo-stats") } })
+				var _IF_ELSE_HOOK_16 = fun.name()
+				fun.hook(_IF_ELSE_HOOK_16, _XML_HOOK_15)
+				var _LAST_VALUE_17
+				 fun.expressions.composite( fun.expressions.reference(__variableName__tasks, ["length"]), ">",  fun.expressions.Number(0)).observe(function() {
+					var _STATEMENT_VALUE_25 =  fun.expressions.composite( fun.expressions.reference(__variableName__tasks, ["length"]), ">",  fun.expressions.Number(0)).evaluate()
+				;(function(ifBranch, elseBranch) {
+					if (_LAST_VALUE_17 && _STATEMENT_VALUE_25.equals(_LAST_VALUE_17).isTruthy()) { return }
+					_LAST_VALUE_17 = _STATEMENT_VALUE_25
+					fun.destroyHook(_IF_ELSE_HOOK_16)
+					_LAST_VALUE_17.isTruthy() ? ifBranch() : elseBranch()
+				})(
+					function ifBranch(){
+					var __variableName__doneTasks = fun.expressions.variable( fun.invoke(__variableName__filter, [__variableName__tasks,
+					fun.expressions.Function(function block(yieldValue, __hackFirstExecution, __variableName__task) {
+						yieldValue( fun.expressions.reference(__variableName__task, ["done"])); return
+					})], ""))
+					var __variableName__pluralize = fun.expressions.variable(
+					fun.expressions.Function(function block(yieldValue, __hackFirstExecution, __variableName__num) {
+						yieldValue( fun.expressions.ternary( fun.expressions.composite(__variableName__num, ">",  fun.expressions.Number(1)),  fun.expressions.Text("items"),  fun.expressions.Text("item"))); return
+					}))
+					var _XML_HOOK_18 = fun.name()
+					fun.hook(_XML_HOOK_18, _IF_ELSE_HOOK_16, { tagName:"span", attrs:{ "class": fun.expressions.Text("todo-count") } })
+						var __variableName__numTasksLeft = fun.expressions.variable( fun.expressions.composite( fun.expressions.reference(__variableName__tasks, ["length"]), "-",  fun.expressions.reference(__variableName__doneTasks, ["length"])))
+						var _XML_HOOK_19 = fun.name()
+						fun.hook(_XML_HOOK_19, _XML_HOOK_18, { tagName:"span", attrs:{ "class": fun.expressions.Text("number") } })
+							fun.emit(_XML_HOOK_19, __variableName__numTasksLeft)
+						fun.emit(_XML_HOOK_18,  fun.expressions.Text(" "))
+						fun.emit(_XML_HOOK_18,  fun.invoke(__variableName__pluralize, [__variableName__numTasksLeft], ""))
+						fun.emit(_XML_HOOK_18,  fun.expressions.Text(" left."))
+					var _IF_ELSE_HOOK_20 = fun.name()
+					fun.hook(_IF_ELSE_HOOK_20, _IF_ELSE_HOOK_16)
+					var _LAST_VALUE_21
+					 fun.expressions.composite( fun.expressions.reference(__variableName__doneTasks, ["length"]), ">",  fun.expressions.Number(0)).observe(function() {
+						var _STATEMENT_VALUE_24 =  fun.expressions.composite( fun.expressions.reference(__variableName__doneTasks, ["length"]), ">",  fun.expressions.Number(0)).evaluate()
+					;(function(ifBranch, elseBranch) {
+						if (_LAST_VALUE_21 && _STATEMENT_VALUE_24.equals(_LAST_VALUE_21).isTruthy()) { return }
+						_LAST_VALUE_21 = _STATEMENT_VALUE_24
+						fun.destroyHook(_IF_ELSE_HOOK_20)
+						_LAST_VALUE_21.isTruthy() ? ifBranch() : elseBranch()
+					})(
+						function ifBranch(){
+						var _XML_HOOK_22 = fun.name()
+						fun.hook(_XML_HOOK_22, _IF_ELSE_HOOK_20, { tagName:"span", attrs:{ "class": fun.expressions.Text("todo-clear") } })
+							var _XML_HOOK_23 = fun.name()
+							fun.hook(_XML_HOOK_23, _XML_HOOK_22, { tagName:"a", attrs:{ "href": fun.expressions.Text("#"), "onclick":
+							fun.expressions.Handler(function block() {
+								var __variableName__remainingTasks = fun.expressions.variable( fun.expressions.List([  ]))
+								__variableName__tasks.evaluate().iterate(function(__variableName__task) {
+									;(function(ifBranch, elseBranch) {
+										 fun.expressions.unary("!",  fun.expressions.reference(__variableName__task, ["done"])).isTruthy() ? ifBranch() : elseBranch()
+									})(
+										function ifBranch(){
+										__variableName__remainingTasks.push(null, __variableName__task)
+										},
+										function elseBranch(){
+											null
+										}
+									)
+								})
+								__variableName__tasks.set(null, __variableName__remainingTasks)
+							}) } })
+								fun.emit(_XML_HOOK_23,  fun.expressions.Text("Clear "))
+								fun.emit(_XML_HOOK_23,  fun.expressions.reference(__variableName__doneTasks, ["length"]))
+								fun.emit(_XML_HOOK_23,  fun.expressions.Text(" completed "))
+								fun.emit(_XML_HOOK_23,  fun.invoke(__variableName__pluralize, [ fun.expressions.reference(__variableName__doneTasks, ["length"])], ""))
+						},
+						function elseBranch(){
+							null
+						}
+					)
+					})
+					},
+					function elseBranch(){
+						null
+					}
+				)
+				})
+})();
+</script></body></html>
+
