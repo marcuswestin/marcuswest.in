@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+<head>
+	<title>TodoMVC sample app written in Fun</title>
+	<link href="../../index.css" rel="stylesheet" />
+</head>
+<body>
+	<noscript style="width:50px; margin: 50px auto;">why not?</noscript>
+	<div id="post">
+		<div class="header">
+			<a class="logo" href="http://marcuswest.in/">marcuswest.in</a><br />
+			<a class="twitter" href="http://twitter.com/marcuswestin">@marcuswestin</a>
+		</div>
+		<div class="body">
+			<span class="date">March 28th, 2012</span>
+			<h1>TodoMVC sample app written in Fun</h1>
+
+<p>What if building realtime JavaScript web apps was as straight-forward as it is to build a static webpage in languages like PHP today? Without worrying about state &amp; UI synchronization, the engineering complexity of realtime web applications would drop by an order of magnitude. There would be a fundamental shift in the way we build the realtime web. Fun is a new programming language for the realtime web that delivers on this promise.</p>
+
+<p>How? By a unique combination of functional, declarative and reactive programming language features. In Fun, every expression creates implicit data bindings for you, so when you write <code>if (user.status is "available") { ... }</code> in Fun, then the statement automatically re-evaluates whenever <code>user.status</code> changes.</p>
+
+<p>Seeing is believing! TodoMVC is a common demo application for popular JavaScript MVC frameworks. Implemented in vanilla JavaScript you end up with <a href="https://github.com/addyosmani/todomvc/blob/master/reference-examples/vanillajs/js/todo.js">317 lines of readable code</a>. The exact same functionality is coded in <a href="https://github.com/marcuswestin/fun/blob/master/apps/todo-mvc/todo-mvc.fun">less than 60 even more readable lines of fun code</a>. The result? The <a href="http://marcuswest.in/fun/todo-mvc.html">Fun app</a> is identical to <a href="http://addyosmani.github.com/todomvc/reference-examples/vanillajs/index.html">the original</a>.</p>
+
+<p>I've included the Fun app source here for convenience:</p>
+
+<pre><code>import localstorage
+import filter
+
+let tasks = []
+
+localstorage.persist(tasks, 'todo-fun')
+
+&lt;link rel="stylesheet" type="text/css" href="./todo-mvc.css" /&gt;
+
+&lt;div id="todoapp"&gt;
+    &lt;div class="title"&gt;
+        &lt;h1&gt;"Todos"&lt;/h1&gt;
+    &lt;/div&gt;
+    &lt;div class="content"&gt;
+        &lt;div id="create-todo"&gt;
+            let newTaskName = null
+            &lt;input id="new-todo" data=newTaskName placeholder="What needs to be done?" onkeypress=handler(event) {
+                if event.keyCode is 13 {
+                    tasks push: { name:newTaskName.copy(), done:false }
+                    newTaskName set: ''
+                }
+            }/&gt;
+        &lt;/div&gt;
+        &lt;div id="todos"&gt;
+            &lt;ul id="todo-list"&gt;
+                for task in tasks {
+                    &lt;li class="todo"+(task.done ? " done" : "")&gt;
+                        &lt;input class="check" type="checkbox" data=task.done /&gt;
+                        &lt;div class="todo-content"&gt;task.name&lt;/div&gt;
+                    &lt;/li&gt;
+                }
+            &lt;/ul&gt;
+        &lt;/div&gt;
+        &lt;div id="todo-stats"&gt;
+            if tasks.length is &gt; 0 {
+                let doneTasks = filter(tasks, function(task) { return task.done }),
+                    pluralize = function(num) { return num is &gt; 1 ? "items" : "item" }
+                &lt;span class="todo-count"&gt;
+                    let numTasksLeft = tasks.length - doneTasks.length
+                    &lt;span class="number"&gt;numTasksLeft&lt;/span&gt;" "pluralize(numTasksLeft) " left."
+                &lt;/span&gt;
+                if doneTasks.length is &gt; 0 {
+                    &lt;span class="todo-clear"&gt;
+                        &lt;a href="#"&gt;"Clear "doneTasks.length" completed "pluralize(doneTasks.length)&lt;/a onclick=handler() {
+                            let remainingTasks = []
+                            for task in tasks {
+                                if !task.done {
+                                    remainingTasks push: task
+                                }
+                            }
+                            tasks set: remainingTasks
+                        }&gt;
+                    &lt;/span&gt;
+                }
+            }
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+		</div>
+		<div id="disqus_thread"></div>
+		<script type="text/javascript">
+		(function() {
+			window.disqus_identifier = 'fun-todomvc'
+			var doc = document,
+				head = doc.getElementsByTagName('head')[0]
+			head.appendChild(doc.createElement('script')).src='http://marcuswestin.disqus.com/embed.js'
+			
+			var thread = document.getElementById('disqus_thread');
+			thread.onmouseover = function() { thread.style.opacity = 1; }
+			thread.onmouseout = function() { thread.style.opacity = .8; }
+		})();
+		
+		// Google analytics
+		var _gaq = [["_setAccount", "UA-21268456-1"], ["_trackPageview"]]
+		setTimeout(function track() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		}, 3000)
+		</script>
+	</div>
+</body>
+</html>
