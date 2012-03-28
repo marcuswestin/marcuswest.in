@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>mGraph - Automata 2 Regular Expression</title>
+	<meta name="author" content="Marcus@MarcusWestin.net">
+	<link rel="stylesheet" type="text/css" href="mGraph.css">
+	
+	<script type="text/javascript" src="./Graph/Grapher.js"></script>
+	<script type="text/javascript" src="./Graph/GraphPanel.js"></script>
+	<script type="text/javascript" src="./Graph/EdgeMatrixPanel.js"></script>
+	<script type="text/javascript" src="./mGraph.js"></script>
+</head>
+<script type="text/javascript">
+	var accepting = true;
+	function doAccept() {accepting = true}
+	function doReject() {accepting = false}
+</script>
+<body onload="init()">
+	<table><tbody><tr><td id="controller">
+		 <div class="section" id="section1">
+			<br />
+			<h1>mGraph...</h1>
+		</div>
+		<div class="section" id="section2">
+			<h2>Structure</h2>
+			<p>
+				<table><tbody>
+					<tr>
+						<!-- 
+						<td><input type="radio" name="animation" onclick="graphPanel.startAll();" CHECKED>Fluid</input></td>
+						<td><input type="radio" name="animation" onclick="graphPanel.stopAll();">Frozen</input></td>
+					</tr><tr>
+						<td><input type="radio" name="mode" onclick="graphPanel.dragNodesOnClick()" CHECKED>Drag</input></td>
+						<td><input type="radio" name="mode" onclick="graphPanel.addEdgesOnClick()">Connect</input></td>
+					</tr><tr>
+					-->
+						<td><button onclick="graphPanel.addNode({force:true})">Add Node</button></td>
+						<td>Edge label <input type="text" size="1" id="label"></input></td>
+						<!--
+							<td>Accept<input type="radio" name="accept" onclick="doAccept()">
+							Reject<input type="radio" name="accept" onclick="doReject()">
+						</td>
+						-->
+					</tr><tr>
+						<!-- <td><button onclick="graphPanel.addRandomEdge()">Add Edge</button></td> 
+						<td>Edge label <input type="text" size="1" id="label"></input></td>
+					-->
+					<!-- </tr><tr>
+						<td><button onclick="graphPanel.undo()">Undo</button></td>
+						<td><button onclick="graphPanel.addNode()">Add Node</button></td>
+					-->
+					</tr>
+				</tbody></table>
+			</p>
+			<p>
+				"Double click a node to select it. Double click another node to connect the two. Hit any key to set the edge label."
+				<!-- <button onclick="graphPanel.addRandomEdge()">Add a random edge</button> -->
+			</p>
+		</div>
+		<div class="section" id="section3">
+			<h2>Automata &amp; <br/>Regular Expressions</h2>
+			<p>
+				<button onclick="graphPanel.toRegExp()">Convert to RegExp</button>
+				<br />
+				<br />Regexp:
+				<br /><input type='text' size="22" id="regexp"></input>
+			</p>
+		</div>
+		<div class="section" id="section4">
+			<h2>Graph Theory <br/>Algorithms<h2>
+			<p>
+				<table><tbody>
+					<tr>
+						<!--
+						<td><button onclick="alert('unimplemented')" CHECKED>Cyclical?</input></td>
+						<td><button onclick="alert('unimplemented')" CHECKED>Tree?</input></td>
+					</tr><tr>
+						<td class="ralign">
+							<input type="text" size="3" value="1"></input>&nbsp; -
+							<input type="text" size="3" value="1"></input>&nbsp; -
+						</td>
+						<td>
+							<button onclick="alert('unimplemented')">Connected?</button>
+							<button onclick="alert('unimplemented')">Colorable?</button>
+						</td>
+					-->
+					<!-- </tr><tr>
+						<td><button onclick="graphPanel.undo()">Undo</button></td>
+						<td><button onclick="graphPanel.addNode()">Add Node</button></td>
+					-->
+					</tr>
+				</tbody></table>
+				
+			</p>
+		</div>
+	</td><td id="wrapper">		
+		
+		<div id="header">
+			<p> </p>
+		</div>
+		<div id="graph">
+			<div id="matrix"> </div>
+		</div>
+	</td></tr></tbody></table>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-1101899-10");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+
+</body>
+</htm

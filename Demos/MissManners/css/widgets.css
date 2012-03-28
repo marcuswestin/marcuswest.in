@@ -1,0 +1,114 @@
+/* A guest to miss manners has two representations: card and circle. Cards are listed, and circles are seated at the table */ 
+.missMannersGuestCard {
+	font-family : Arial;
+	font-size : 13px;
+	padding : 7px 0px 5px 5px;
+	width : 160px;
+	height : 50px;
+	color : #833;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	margin : 5px 5px 5px 5px;
+	/* border : 2px solid #f93; */
+	border : 1px solid #c66;
+}
+.missMannersGuestCard > *:hover {
+	cursor:pointer; cursor:hand
+}
+.missMannersGuestCard .gender {
+	float : right;
+	margin-right : 3px;
+}
+.missMannersGuestCard .remove {
+	float : right;
+	margin-right : 6px;
+}
+.missMannersGuestCard .name {
+	display : inline;
+	font-weight : bold;
+	margin-left : 15px;
+	padding-bottom : 20px;
+}
+.missMannersGuestCard .interests {
+	display : block;
+	font-size : 12px;
+	margin : 10px 0px 0px 22px;
+	/* font-style : italic; */
+}
+.missMannersGuestCircle {
+	background : blue;
+}
+
+/* The controller - where we add guests */
+#controller {
+	padding-bottom : 20px;
+}
+/* Guest input elements */
+#guestColor {
+	position : relative; top : -1px; left : -1px;
+	margin : 0px 2px 0px 2px;
+	-moz-border-radius : 7px;
+	-webkit-border-radius: 7px;
+	padding-right : 10px;
+	display : inline;
+	border : none;
+	background-color: rgb(250, 151, 5);
+	border : 2px solid #fc3;
+}
+#guestColor:hover {
+	cursor:pointer; cursor:hand
+}
+#colorPicker {
+	display : none;
+	top : 0px;
+	left : 0px;
+}
+#femaleSelector, #maleSelector {
+	border : 2px dashed transparent;
+	position : relative; top : 3px;
+}
+input.button {
+	border : #c66 1px solid;
+	color : #933;
+}
+input#guestName, input#guestInterest {
+	/* border : #c66 1px solid; */
+	border : none;
+	color : #933;
+	margin : 2px 0px 3px 0px;
+	width : 120px;
+	font-size : .7em;
+	padding : 2px;
+	font-style : italic;
+}
+input#guestAdd{
+	position:relative; top : 3px; left :-1px;
+}
+
+.button {
+	background-color : white;
+	font-size : .7em;
+	margin : 2px;
+}
+.button:hover {
+	cursor:pointer;
+	cursor:hand;
+}
+
+/* Body controlers */
+input#doPlace {
+	float : left;
+}
+
+
+/* A customizable horizontal breaker, like <hr> */
+div.hr, span.hr {
+	width : 90%;
+	height : 1px;
+	border : none;
+	background-color : #789;
+}
+/* hide hidden elements */
+.hidden {
+	display : none;
+}

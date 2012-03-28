@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Resizer</title>
+	<script type="text/javascript" charset="utf-8" src="jquery.js"></script>
+	<script type="text/javascript" charset="utf-8">
+	window.onload = function(){
+		var maxWidth = $('#image').css("width");
+		$('#image').css({
+			'maxWidth' : maxWidth,
+			'width' : '100%'
+		});
+	}
+	</script>
+	<style type="text/css" media="screen">
+	#container
+	{
+		width: 90%;
+		margin: 10px auto;
+		background-color: #fff;
+		color: #333;
+		border: 1px solid gray;
+		line-height: 130%;
+		font-family : Helvetica, Arial;
+	}
+
+	#top
+	{
+		padding: .5em;
+		background-color: #ddd;
+		border-bottom: 1px solid gray;
+	}
+
+	#top h1
+	{
+		padding: 10px;
+	}
+
+	#rightnav
+	{
+		float: right;
+		width: 160px;
+		margin: 0;
+		padding: 1em;
+	}
+
+	#content
+	{
+		margin-right: 200px;
+		padding: 1em;
+		/* max-width: 36em; */
+	}
+
+	#image-wrapper {
+		margin : 10px;
+		padding : 10px;
+	}
+
+	#footer
+	{
+		clear: both;
+		margin: 0;
+		padding: .5em;
+		color: #333;
+		background-color: #ddd;
+		border-top: 1px solid gray;
+	}
+
+	#leftnav p { margin: 0 0 1em 0; }
+	#content h2 { margin: 0 0 .5em 0; }	
+	</style>
+
+	<div id="container">
+		<div id="top">
+			<h1>Resizing image</h1>
+		</div>
+		<div id="rightnav">
+			<p>
+				Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut.
+			</p>
+		</div>
+		<div id="content">
+			<div id="image-wrapper">
+				<img src="logo.gif" id='image' />
+			</div>
+		</div>		
+		<div id="footer">
+			Footer
+		</div>
+	</div>
+	</html>

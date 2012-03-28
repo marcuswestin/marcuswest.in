@@ -1,0 +1,10 @@
+<% write = HtmlWriter.new _erbout, cgi %>
+<% title = '' %>
+<% write.html do %>
+	<% write.head :title => title do %>
+	<% end %>
+	<% write.body do %>
+		<h2><%= title %></h2>
+		<% write.list_dir nil, true %>
+	<% end %>
+<% end %>

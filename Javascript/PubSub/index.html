@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>PubSub Demo</title>
+		<script type="text/javascript" charset="utf-8" src="PubSubBroker.js"></script>
+		<script type="text/javascript" charset="utf-8" src="app.js"></script>
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	</head>
+	<body>
+		<div id="control">
+			<button id="make-email">make email</button>
+		</div>
+		
+		<div id="inbox-container">
+			<div id="inbox-label">
+				Inbox (0)
+			</div>
+			<hr />
+			<div id="inbox">
+
+			</div>			
+		</div>
+	
+		<div id="body-container">
+			<div id="body-label">
+				Email body
+			</div>
+			<hr />
+			<div id="body">
+
+			</div>
+		</div>
+		
+		<div class="lorem" id="lorem1">
+			: Lorem 1 ipsum dolores bla bla bla
+		</div>
+		<div class="lorem" id="lorem2">
+			: Lorem 2 ipsum dolores bla bla bla
+		</div>
+		<div class="lorem" id="lorem3">
+			: Lorem 3 ipsum dolores bla bla bla
+		</div>
+		<div class="lorem" id="lorem4">
+			: Lorem 4 ipsum dolores bla bla bla
+		</div>
+		<div class="lorem" id="lorem5">
+			: Lorem 5 ipsum dolores bla bla bla
+		</div>
+	
+		<script type="text/javascript" charset="utf-8">
+			(function(){
+				var uniqueId = 1;
+				document.getElementById('make-email').onclick = function(){
+					var id = 'email-' + uniqueId++;
+					gBroker.publish('email-arrive', { 
+						id : id, 
+						title : 'Test email ' + id, 
+						body : id + document.getElementById('lorem'+(uniqueId%5 + 1)).innerHTML 
+					});
+				}
+			})();
+		</script>
+	</body>
+</html>

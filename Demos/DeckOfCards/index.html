@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Deck of Cards</title>
+	<script type="text/javascript" charset="utf-8" src="deck.js"></script>
+	<style type="text/css" media="screen">
+		body {
+			padding : 20px;
+		}
+		div {
+			margin-bottom : 5px;
+			font-family : 'Helvetica', 'Arial';
+			font-size : 13px;
+			color : #557;
+			font-weight : bold;
+		}
+		.header {
+			font-size : 16px;
+			margin-bottom : 15px;
+		}
+		.sub-header {
+			font-size : 14px;
+			margin-bottom : 10px;
+		}
+		.action {
+			margin-top : 20px;
+			font-weight : bold;
+		}
+		.draw {
+			font-weight : normal;
+			margin-left : 10px;
+		}
+		a {
+			text-decoration : none;
+			color : #88a;
+		}
+		a:hover {
+			text-decoration : underline;
+		}
+	</style>
+</head>
+<body>
+	<div class="header">Demo of the <a href="deck.js">Deck and Card</a> classes.</div>
+	<div class="sub-header"><a href=".">Refresh</a> to run again.</div>
+	
+	<script type="text/javascript" charset="utf-8">
+		function drawFive(deck) {
+			var card;
+			for (var i=0; i < 5; i++) {
+				card = deck.topCard();
+				document.write('<div class="draw">Drew '+ card +'</div>');
+			};			
+		}
+		deck = new Deck();
+		document.write('<div class="action">Draw 5 cards from the pristine, newly opened deck</div>');
+		drawFive(deck);
+		document.write('<div class="action">Now shuffle and do it again</div>');
+		deck.shuffle();
+		drawFive(deck);
+		document.write('<div class="action">Aaaand one more time</div>');
+		deck.shuffle();
+		drawFive(deck);
+	</script>
+</body>
+</html>

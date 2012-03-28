@@ -1,0 +1,84 @@
+if (!window.mwd || !window.jQuery) {
+	throw ("mwd.MissManners requires mwd and jQuery!");
+}
+
+/**
+* An user interface for a miss manners application - add your guests, as well as their gender and interests, and we'll seat them appropriately.
+*/
+mwd.MissManners = {
+	dependencies : ['jQuery'],
+	nextId : 0
+}
+
+/**
+* A miss manners guest
+* @constructor
+* @param {String} name The guest name
+* @param {String} gender The guest gender. 'male' or 'female'
+* @param {String} interests The guest interests. A single string. You should give guests interestss so that some match up - this is what the rule engine bases their placemenet on. 
+* @param {String} color Hexadecimal value of the color to represent the guest with.
+*/
+mwd.MissManners.Guest = function(params) {
+	this.name = params.name || this.Default.name;
+	this.gender = params.gender ? params.gender.toLowerCase() : this.Default.gender;
+	this.interests = params.interests ? params.interests.toLowerCase() : this.Default.interests;
+	this.color = params.color || this.Default.color;
+	this.id = 'MMGuest_' + mwd.MissManners.nextId++;
+}
+
+// Create all new dom elements in this one
+mwd.MissManners.Guest.prototype.dom = document.createElement('div');
+
+/**
+* The default values for a guest: name, gender, interests
+*/
+mwd.MissManners.Guest.prototype.Default = {
+	name : 'John Doe',
+	gender : 'female',
+	interests : 'weather',
+	color : '#cde',
+	cardClassName : 'missMannersGuestCard'
+}
+mwd.MissManners.Guest.prototype.jquery = function() {
+	return $('#'+this.id);
+}
+mwd.MissManners.Guest.prototype.moveTo = function(params) {
+	this.jquery().css({
+		'position' : 'absolute',
+		'top' : params.y,
+		'left' : params.x
+	});
+}
+
+
+mwd.tmp = '<div id="{id}" style="background-color:{color}" class="'+mwd.MissManners.Guest.prototype.Default.cardClassName+'">';
+mwd.tmp += '<img class="remove" src="img/remove.png" />';
+mwd.tmp += '<img class="gender" src="img/{gender}.png" />';
+mwd.tmp += '<span class="name">{name}</span>';
+mwd.tmp += '<span class="interests">Likes {interests}</span>';
+mwd.tmp += '</div>';
+mwd.MissManners.Guest.prototype.cardTemplate = new mwd.util.HtmlTemplate(mwd.tmp);
+
+mwd.MissManners.Guest.prototype.toDom = function() {
+	var html = this.cardTemplate.print(this /*, {toUpperCase : null}*/);
+	this.dom.innerHTML = html;
+	this.dom = this.dom.firstChild;
+	var that = this;
+	$(this.dom.childNodes).each(function(index, node){
+		var jNode = $(node).click(function(){
+			if (node.className == 'gender') {
+				that.gender = that.gender == 'male' ? 'female' : 'male';
+				node.src = 'img/'+that.gender+'.png';
+			} else if (node.className == 'remove'){
+				that.beforeRemove && that.beforeRemove(that);
+				that.dom.parentNode.removeChild(that.dom);
+				delete(that);
+			} else {
+				var val = prompt('Change the '+node.className);
+				jNode.text(val);
+				that[node.className] = val;				
+			}
+		})
+	});
+	return this.dom;
+}

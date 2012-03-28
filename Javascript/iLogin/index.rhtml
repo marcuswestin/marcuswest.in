@@ -1,0 +1,42 @@
+<% write = HtmlWriter.new _erbout, cgi %>
+<% title = 'iLogin' %>
+<% write.html do %>
+	<% write.head :title => title do %>
+	<% end %>
+	<% write.body do %>
+		<h2><%= title %></h2>
+		<p class="description">
+            <i>"Logs you in rapidly (even with your iPhone)"</i>		  
+		</p>
+        <h3>What is it?</h3>
+        <p class="description">
+            Use it to log in to any website with a single click.
+        </p>
+        <p class="description">
+            The first time, you click iLogin and fill in your info.
+        </p>
+        <p class="description">
+            Every other time, you just click.
+        </p>
+        <h3>"Installation"</h3>
+        <p class="description">
+            Drag this <a href="javascript:(function(){%20var%20fus%20=%20['username','user','cnetid','email','Email','user_id'];%20var%20fps%20=%20['Passwd','password','pass'];%20var%20f,%20fu,%20fp;%20var%20fs=document.forms;%20f%20=%20fs['loginform']%20||%20fs['login']%20||%20fs[0];%20if%20(f){%20for%20(var%20i=0;%20i%3Cfus.length;%20i++)%20{%20fu=f[fus[i]];%20if%20(fu){break;}%20}%20for%20(var%20i=0;%20i%3Cfus.length;%20i++)%20{%20fp=f[fps[i]];%20if%20(fp){break;}%20}%20if%20(%20fu%20&&%20fp%20)%20{%20function%20setCookie(key,val)%20{%20document.cookie=key+'='+scramble(val,9)+';%20expires=Mon,%203%20Jan%202011%2020:47:11%20UTC;%20path=/'%20}%20function%20getCookie(key){%20var%20cks=new%20String(document.cookie).split(';');%20var%20l=cks.length;%20for%20(var%20i=0;%20i%3Cl;%20i++)%20{%20var%20kvp%20=%20cks[i].split('=');%20var%20k=kvp[0].substring(1);%20if(k==key)%20{%20return%20unscramble(kvp[1],9);%20}%20}%20}%20function%20mod(num,%20op)%20{%20if%20(num%20%3C%20op)%20{%20return%20num;%20}%20else%20{%20return%20mod(num-op,%20op);%20}%20}%20function%20unscramble(x,shf){%20return%20scramble(x,26-shf);%20}%20function%20scramble(x,shf)%20{%20var%20abc='abcdefghijklmnopqrstuvwxyz';%20var%20ABC='ABCDEFGHIJKLMNOPQRSTUVWXYZ';%20var%20r1='';%20var%20r2='';%20var%20shf=eval(shf);%20for(var%20i=0;i%3Cx.length;i++){%20var%20let=x.charAt(i);%20var%20pos=ABC.indexOf(let);%20if(pos%3E=0){%20r1+=ABC.charAt(mod((pos+shf),26));%20}%20else%20{%20r1+=let;%20}%20}%20for(var%20i=0;i%3Cr1.length;i++){%20var%20let=r1.charAt(i);%20var%20pos=abc.indexOf(let);%20if(pos%3E=0){%20r2+=abc.charAt(mod((pos+shf),26));%20}%20else%20{%20r2+=let;%20}%20}%20return%20r2;%20}%20var%20username=getCookie('mwd.uoc.un');%20var%20password=getCookie('mwd.uoc.pw');%20if%20(username==''||!username)%20{%20username=prompt('Enter%20Username/Email');%20setCookie('mwd.uoc.un',%20username);%20}%20if%20(password==''||!password)%20{%20password=prompt('Enter%20Password');%20setCookie('mwd.uoc.pw',%20password);%20}%20fu.value=username;%20fp.value=password;%20f.submit();%20}%20}})();">iLogin</a> bookmarklet link to your toolbar (or right click and save to favorites). Then just click it.
+        </p>
+        <p class="description">
+            If you ever enter the wrong login info, or just want to clear it, use the <a href="javascript:(function(){%20function%20setCookie(key,val)%20{%20document.cookie=key+'='+val+';%20expires=Mon,%203%20Jan%202011%2020:47:11%20UTC;%20path=/'%20}%20function%20iLoginErase(){%20setCookie('mwd.uoc.un',%20'');%20setCookie('mwd.uoc.pw',%20'');%20}%20iLoginErase();%20})();">iLoginEraser</a>.
+        </p>
+        <h3>iPhone</h3>
+        <p class="description">
+            If you're on the iPhone, you will have to save it as a bookmark to you Bookmarks folder, and then sync.
+        </p>
+        <h3>Open Source</h3>
+        <p class="description">
+            <a href="mailto:m@marcuswestin.com">Write me a line</a> if you like it!
+        </p>
+		<% write.list_dir nil, true %>
+        <h3>Bookmarklet Composers</h3>
+		<p class="description">
+		  See the <a href="http://javascript.marcuswestin.com/BookMarkLet-R/">BookMarkLet-R</a> to easily turn your javascript source into bookmarklets.
+		</p>
+	<% end %>
+<% end %>

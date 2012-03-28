@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<style type="text/css" media="screen">
+		iframe {
+			/* display : none; */
+		}
+	</style>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>post</title>
+</head>
+<body id="post" onload="">
+	<h1>Outer</h1>
+	<h1 id="outer">Outer</h1>
+</body>
+<script type="text/javascript" charset="utf-8">
+	var iframe = document.createElement('iframe');
+	iframe.src="form.html";
+	document.body.appendChild(iframe);
+</script>
+<html>

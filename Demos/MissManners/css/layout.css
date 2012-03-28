@@ -1,0 +1,137 @@
+body {
+	font-family : Arial, serif;
+}
+table  {
+	border-collapse: collapse; 
+}
+td {
+	vertical-align : top;
+}
+div {
+	margin : auto;
+}
+h1 {
+	font-size : 1.4em;
+}
+h2 {
+	font-size : 1.2em;
+}
+.right {
+	float : right;
+}
+.up10 {
+	position : relative;
+	top : -10px;
+}
+.up20 {
+	position : relative;
+	top : -20px;
+}
+a {
+	color :#e77;
+	text-decoration : none;
+}
+a:hover {
+	color :#f99;
+}
+
+#explanation {
+	font-family : arial;
+	color :#933;
+	width : 350px;
+	font-size : .8em;
+}
+#explanation p, #explanation pre {
+	margin-left : 20px;
+}
+
+#header {
+	-moz-border-radius-bottomright : 12px;
+	-moz-border-radius-bottomleft : 12px;
+	-webkit-border-bottom-right-radius : 12px;
+	-webkit-border-bottom-left-radius : 12px;
+	padding : 10px 20px 10px 50px;
+	width : 850px;
+	text-align : left;
+	margin-bottom : 10px;
+	font-size : 1.6em;
+	letter-spacing : .4em;
+}
+#header #logo {
+	height : 40px;
+	padding : 3px;
+	border : 1px solid #933;
+}
+#header #slogan {
+	position : relative; top : -15px; left : 20px;
+	color : #933;
+}
+#header #slogan span {
+	font-size : .7em;
+	letter-spacing : .2em;
+	font-style : normal;
+}
+
+#footer {
+	-moz-border-radius-topright : 12px;
+	-moz-border-radius-topleft : 12px;
+	-webkit-border-top-right-radius : 12px;
+	-webkit-border-top-left-radius : 12px;
+	width : 850px;
+	padding : 20px 20px 20px 50px;
+	margin-top : 10px;
+}
+
+#panel {
+	width : 200px;
+	height : 400px;
+	margin-right : 20px;
+	-moz-border-radius-topleft : 20px;
+	-moz-border-radius-bottomleft : 20px;
+	-webkit-border-top-left-radius : 20px; 
+	-webkit-border-bottom-left-radius : 20px; 
+	border-right : 10px;
+	padding : 20px 10px 10px 20px;
+}
+
+#guestList {
+	padding : 20px, 0px 0px 0px;
+}
+
+#bodySpacing {
+	width : 10px;
+}
+
+#body {
+	width : 650px;
+	height : 400px;
+	margin-right : 20px;
+	padding : 20px 10px 10px 20px;
+	-moz-border-radius-topright : 20px;
+	-moz-border-radius-bottomright : 20px;
+	-webkit-border-top-right-radius : 20px; 
+	-webkit-border-bottom-right-radius : 20px; 	
+}
+
+/** Colors */
+#header {
+	background-color : #edc;
+}
+
+#footer {
+	background-color : #edc;	
+}
+
+#panel {
+	background-color : #fed;
+}
+
+#body {
+	background-color : #ffd;
+}
+
+#table {
+	margin-left : 80px;
+}
+
+

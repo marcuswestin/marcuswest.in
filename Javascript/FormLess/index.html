@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>FormLess | forms made style agnostic and auto-validating</title>
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<style id="style" type="text/css" media="screen">
+.invalid {
+	background-color : red;	
+}
+.valid {
+	background-color : green;	
+}
+.itemField {
+	margin : 10px;
+}
+.itemField input, .itemField select, .itemField label {
+	display : block;
+}
+.status {
+	width : 20px;
+	height : 20px;
+	float : right;
+	position : relative;
+	top : 10px;
+	-moz-border-radius : 2px;
+	-webkit-border-radius : 2px;
+	border-radius : 2px;
+}
+	</style>
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header">
+		        FormLess - style agnostic and auto-validating forms
+			<br />
+			<a href="http://blog.narcvs.com/?p=52">blog post ...</a>
+		</div>
+		<div id="info" class="container">
+			<div class="description">
+				Creating HTML forms can be a drag. 
+				Validating the form input is even worse. 
+				With FormLess you create a style-agnostic form with validation and a submit callback with a few lines of javascript!
+			</div>
+			<pre id="info-script">
+				
+			</pre>
+		</div>
+		<div id="demo" class="container">
+			<div class="description">
+				Demo from javascript on the left
+			</div>
+			<div id="form-container">
+				<!-- Form gets created here! -->
+			</div>
+			<div id="results">
+
+			</div>		
+		</div>
+	</div>
+<script type="text/javascript" charset="utf-8" src='FormLess.js'></script>
+<script id="script" type="text/javascript" charset="utf-8">
+new FormLess('form-container', {
+	// form items
+	items : [
+	{
+		name : 'Age',
+		type : 'text'
+	},{
+		name : 'Gender',
+		type : 'select',
+		options : ['None of your business', 'Male', 'Female'],
+		// custom validation for this item
+		validate : function(data) {
+			return data && data != 'None of your business'
+		}
+	},{
+		name : 'Name',
+		type : 'text'
+	},{
+		name : 'Full Name',
+		type : 'text',
+		// custom validation for this item
+		validate : function(data) {
+			var split = data.split(' ');
+			return split.length >= 2 && split[1] 
+				&& split[0].length >= 2 
+				&& split[1].length >= 2;
+		}
+	}],
+	// default validation
+	validate : function(data) {
+		return data != '';
+	},
+	// If validation passed, onsubmit gets called
+	onsubmit : function(data) {
+		var results = document.getElementById('results');
+		results.innerHTML = '';
+		for (var key in data) {
+			var result = document.createElement('div');
+			addClassName(result, 'result');
+			result.innerHTML = key + ' = ' + data[key];
+			results.appendChild(result);
+		}
+	}
+});
+</script>
+<script type="text/javascript" charset="utf-8">
+var script = '/* javascript */' + document.getElementById('script').innerHTML;
+var css = '\n\n/* css */' + document.getElementById('style').innerHTML
+document.getElementById('info-script').innerHTML = script + css;
+</script>
+</body>
+</html>

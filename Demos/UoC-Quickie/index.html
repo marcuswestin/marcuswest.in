@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>UoC Quickie</title>
+	<style type="text/css" media="screen">
+		body {
+			color : #456;
+			font-family : Helvetica, Arial;
+			font-size : .9em;
+		}
+		a {
+			text-decoration : none;
+			color : #789;
+		}
+	</style>
+</head>
+<body id="test" onload="">
+	Test page for the <a href="javascript:(function(){if(document.forms&&document.forms.loginform&&document.forms.loginform.username){function%20decookify(x,shf){return%20cookify(x,26-shf);}function%20trim(str){return%20decookify(str.replace(/^\s\s*/,'').replace(/\s\s*$/,''),offs);}function%20setYearCookie(key,val){var%20d=new%20Date();d.setYear(d.getYear()+1901);document.cookie=cookify('mwd.uc.'+key,offs)+'='+cookify(val,offs)+';%20expires='+d.toUTCString()+';%20path=/';}function%20getCookie(key){var%20cks=document.cookie.split(';');var%20l=cks.length;for(var%20i=0;i%3Cl;i++){var%20kvp=cks[i].split('=');var%20k=trim(kvp[0]);if(k=='mwd.uc.'+key){return%20trim(kvp[1]);}}}function%20mod(num,op){if(num%3Cop){return%20num;}else{return%20mod(num-op,op);}}function%20cookify(x,shf){var%20abc='abcdefghijklmnopqrstuvwxyz';var%20ABC='ABCDEFGHIJKLMNOPQRSTUVWXYZ';var%20r1='';var%20r2='';var%20shf=eval(shf);for(var%20i=0;i%3Cx.length;i++){var%20let=x.charAt(i);var%20pos=ABC.indexOf(let);if(pos%3E=0){r1+=ABC.charAt(mod((pos+shf),26));}else{r1+=let;}}for(var%20i=0;i%3Cr1.length;i++){var%20let=r1.charAt(i);var%20pos=abc.indexOf(let);if(pos%3E=0){r2+=abc.charAt(mod((pos+shf),26));}else{r2+=let;}}return%20r2;}var%20offs=7;var%20username=getCookie('un');var%20password=getCookie('pd');var%20lastlogin=getCookie('ll');var%20unmsg='Cheers!%20No%20cnet%20id%20saved.%20Type%20yours%20for%20quick%20login%20in%20the%20future';var%20pwmsg='No%20password%20in%20cookies.%20Type%20it%20in!%20(Remember:%20protect%20your%20cookies!)';var%20dt=parseInt(new%20Date().getTime())-parseInt(lastlogin);if(dt%3C30000){username='';password='';unmsg='Woops!%20Invalid%20username%20or%20password.%20Let\'s%20try%20again.%20\n\nUser%20name:';pwmsg='...%20aaand%20the%20password...';}if(!username){username=prompt(unmsg);setYearCookie('un',username);}if(!password){password=prompt(pwmsg);setYearCookie('pd',password);}setYearCookie('ll',new%20String(new%20Date().getTime()));var%20f=document.forms.loginform;f.username.value=username;f.password.value=password;f.submit();}})();">UoC Quickie</a> bookmarklet. <br />See the <a href="http://marcuswestinblog.blogspot.com/2008/03/uoc-auto-login-bookmarklet.html">blog post on UoC Quickie</a>, or just click the link to test it. <br />To save the bookmarklet, just drag the link to your bookmarks toolbar.
+	<br />
+	<br />
+	<hr />
+	<br />
+	<form name="loginform" method="POST" action="./login.php">
+		<table border="0" cellspacing="5" cellpadding="5">
+			<tr><td>User name</td><td><input type="text" name="username" value="" id="username"></td><td>(Correct test user name: Joe)</td></tr>
+			<tr><td>Password</td><td><input type="password" name="password" value="" id="password"></td><td>(Correct test password: changeme)</td></tr>
+			<tr><td></td><td><input type="submit" value="Login"></td><td></tr>
+		</table>
+	</form>
+	<?php
+		$ROOT = $_SERVER['DOCUMENT_ROOT']."/../"; 
+		include "${ROOT}include/macros.php";
+	?>	
+	<?printTracker("UA-1101899-13");?>
+</body>
+</html>
+

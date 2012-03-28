@@ -1,0 +1,96 @@
+<% write = HtmlWriter.new _erbout, cgi %>
+<% title = 'BookMarkLet-R' %>
+<% write.html do %>
+<% write.head :title => title do %>
+	<% write.static :script, 'jquery/jquery.js' %>
+	<script type="text/javascript" charset="utf-8">
+	var oPadding = 10;
+	var oBorderWidth = 21;
+	var oCharHeight = 20;
+	var timeoutId = null;
+	var delay = 1000; // should more or less equal fade duration
+	var lastInput = '';
+	function urlEncode(code) {
+		if (code.match(/\/\*/)){
+			var msg = 'Please remove multi line comments ';
+			msg += 'or output may be faulty.';
+			msg += 'Also make sure your regexps were replaced correctly';
+			alert (msg);
+		}
+		code = code.replace(/(\/\/.*)+/g	, '');       // single line comments
+		code = code.replace(/%/g         	, '%25');    // mod operator
+		code = code.replace(/\s+/g       	, '%20');    // white spaces
+		code = code.replace(/</g         	, '%3C');    // Less than
+		code = code.replace(/>/g         	, '%3E');    // Greater than
+        code = code.replace(/"/g         	, '%22');    // Quotes
+        //code = code.replace(/\?/g        	, '%3F');    // Test operator
+		//code = code.replace(/@/g        	, '%40');    
+		//code = code.replace(/(\n\r)+/g  	, ';');       // line breaks
+		//code = code.replace(/&/g			, '%26');    // logic operator
+		return 'javascript:(function(){'+code+'})();'
+	}
+	function demo(id){
+		$('#input-code').focus();
+		$('#input-code')[0].value=$('#demo-code-1').html();
+		$('#input-name')[0].value='Good Morning';
+		$('#input-name').keypress();
+	}
+	function doit() {
+	    var encoded = urlEncode($('#input-code')[0].value);
+	    var name = $('#input-name')[0].value;
+        $('#output-bookmarklet, #output-code').html('').css('height',oCharHeight)
+        .animate({ borderWidth:oBorderWidth, padding : 0, height : 0},500,function(){
+            $('#output-bookmarklet').html('<a href="'+encoded+'">'+name+'</a>')
+            $('#output-code').html('<a href="'+encoded+'">'+ (encoded.length < 110 ? encoded : encoded.substring(0,110) + ' ... ')+'</a>')
+        })
+        .animate({ borderWidth:1, padding:oPadding, height : oCharHeight }, 500);
+	}
+	$(document).ready(function(){
+	    var input = $('#input-code, #input-name');
+		$('#output-bookmarklet, #output-code').html('').css({padding : oPadding, border : 'solid #8bd', borderWidth : 1, height : oCharHeight, width : '90%'});
+		$('#output-code').css({fontSize : '.8em', fontFamil : 'courier'});
+        
+		
+		input.keyup(function(key){
+			$('#output-bookmarklet').append(key+"<br />");
+			if (timeoutId) { window.clearTimeout(timeoutId); }
+				if (/*lastInput != input[0].value && (input[0].value != '')*/ true) {
+    				timeoutId = window.setTimeout(doit, delay);
+    				lastInput = input[0].value;
+				}
+		});
+	});
+	</script>
+<% end %>
+<% write.body do %>
+	<h2><%= title %></h2>
+	<p class="description">
+		<i>"Converting your javascript into bookmarklets, quick and easy"</i>
+	</p>
+	<p class="description">
+	   Enter your bookmarklet name here ...
+	</p>
+	<input type="text" size="30" id="input-name" value="iBookmarklet!" />
+	<p class="description">
+		... paste javascript here ...
+	</p>
+	<textarea rows='15' cols='80' id="input-code"></textarea> <a href="javascript:demo('demo-code-1');">demo code</a> 
+	<p class="description">
+		... and the bookmarklet will appear here (drag to toolbar to save) ...
+	</p>
+	<p class="output" id="output-bookmarklet" ></div>
+    <p class="description">
+        ... with a sample of the corresponding href attribute code here ...
+    </p>
+    <div class="output" id="output-code" ></div>
+    <p class="description" style="font-size:.8em;">
+        <a href="javascript:doit();">Manual trigger</a>        
+    </p>
+    <pre id="demo-code-1" style="height:0px; width:0px; overflow:none; display:none;">
+function goodMorning(name) {
+	alert("Good morning "+name+"!");
+}
+goodMorning(prompt("What may I call you sir?"));
+	</pre>
+	<% end %>
+<% end %>

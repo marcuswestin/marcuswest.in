@@ -1,0 +1,60 @@
+body {
+	font-family : "Lucidia Grande", Arial, sans-serif;
+	color : #333;
+}
+#left {
+	-webkit-border-radius-top-left : 15px;
+	-moz-border-radius-topleft : 15px;
+	width : 300px;
+	float : left;
+	overflow :auto;
+}
+.email-listing {
+	margin : 10px;
+	cursor : hand;
+	cursor : pointer;
+	font-weight : bold;
+	border-bottom : 2px solid #aaa;
+	padding-bottom : 8px;
+}
+.email-listing .date {
+	font-size : .8em;
+	display : block;
+	margin : 2px;
+	margin-left : 10px;
+	color : #555;
+}
+.opened {
+	font-weight : normal;
+}
+
+.small {
+	font-size : .5em;
+	color : #555;
+}
+
+.column {
+	border : 2px solid #555;
+	height : 800px;
+	padding : 10px;
+}
+
+#right {
+	width : 800px;
+	margin-left : 330px;
+	-webkit-border-radius-top-right : 15px;
+	-moz-border-radius-topright : 15px;
+}
+#header {
+	width : 100%;
+	font-size : 2em;
+	padding-bottom : 10px;
+	border-bottom : 1px solid black;
+}
+#email-title {
+	margin : 13px;
+	font-size : 1.2em;
+}
+#email-text {
+	margin-left : 20px;
+}

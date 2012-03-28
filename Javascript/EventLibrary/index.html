@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>eventStuff</title>
+	<script type="text/javascript" charset="utf-8" src="EventBroadcaster.js"></script>
+	<script type="text/javascript" charset="utf-8" src="EmailClient.js"></script>
+	<script type="text/javascript" charset="utf-8" src="EmailRubberData.js"></script>
+	<link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+</head>
+<body>
+	<div id="left" class="column">
+		<div>
+			Inbox <span id="unread-count">(0)</span>
+		</div>
+		<div id='inbox-email-listings'>
+			
+		</div>
+	</div>
+	<div id="right" class="column">
+		<div id="header">
+			Email reader - event manager demo. 
+			<div class="small">
+				Library: <a href="EventBroadcaster.js">EventBroadcaster.js</a> 
+				| Client: <a href="EmailClient.js">EmailClient.js</a>
+				| Data: <a href="EmailRubberData.js">EmailRubberData.js</a>
+			</div>
+		</div>
+		<div id="emailView">
+			<div id="email-title">
+
+			</div>
+			<div id="email-text">
+
+			</div>
+		</div>	
+	</div>
+	<script type="text/javascript" charset="utf-8">
+		(function(){
+			new EmailView(
+				document.getElementById('inbox-email-listings'),
+				document.getElementById('email-title'), 
+				document.getElementById('email-text')
+			);
+			new InboxView(document.getElementById('unread-count'));
+
+			var EmailRubberIndex = -1;
+			(function pollFromServer() {
+				EmailRubberIndex = ((EmailRubberIndex + 1) % EmailRubberData.length)
+				window.setTimeout(pollFromServer, Math.random() * 5 * 1000) // from 0 t0 5 seconds
+				EmailPubSub.broadcast('receiveEmail', [EmailRubberData[EmailRubberIndex], new Date()]);
+			})();
+		})();
+	</script>
+</body>
+</html>

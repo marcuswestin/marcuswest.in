@@ -1,0 +1,64 @@
+body, html {
+	font-family : Tahoma;
+	font-size : 12px;
+}
+
+div {
+	padding : 2px;
+}
+
+#body-container, #inbox-container {
+	border : 2px solid black;
+	-moz-border-radius : 4px;
+	-webkit-border-radius : 4px;
+	border-radius : 4px;
+	position : absolute;
+}
+
+#control {
+	width : 200px;
+	top : 20px;
+	left : 20px;
+	
+}
+
+
+#inbox-container {
+	width : 200px;
+	top : 50px;
+	left : 20px;
+	height : 500px;
+	overflow : auto;
+}
+#inbox-label, #body-label {
+	font-size : 13px;
+}
+#inbox div {
+	cursor : pointer;
+}
+#inbox div:hover {
+	background-color : #ddf;
+}
+#inbox .new {
+	font-weight : bold;
+}
+#inbox div .remove-button {
+	position : absolute;
+	right : 5px;
+}
+
+
+
+#body-container {
+	top : 50px;
+	left:248px;
+	width : 620px;
+	height : 500px;
+}
+#body {
+	margin : 20px;
+}
+
+.lorem {
+	visibility : hidden;
+}
