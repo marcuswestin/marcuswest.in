@@ -7,7 +7,7 @@ push: index
 	curl http://marcuswest.in/pull/index.php
 
 .PHONY: index
-index: lib/less posts update-store.js
+index: posts
 	node index_compile.js
 
 lib/less:

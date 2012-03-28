@@ -1,6 +1,6 @@
 var fs = require('fs'),
 	mustache = require('mustache'),
-	less = require('./lib/less/lib/less')
+	less = require('less')
 
 var templateHTML = fs.readFileSync('index_template.html').toString(),
 	data = {},

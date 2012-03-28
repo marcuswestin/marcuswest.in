@@ -1,7 +1,7 @@
 if (__dirname != 'posts') { process.chdir('posts') }
 
 var fs = require('fs'),
-	sys = require('sys'),
+	util = require('util'),
 	Showdown = require('../write/showdown'),
 	// funSyntaxHighlighter = require('../lib/funSyntaxHighlighter'),
 	mustache = require('mustache'),
@@ -9,8 +9,8 @@ var fs = require('fs'),
 
 require('./date') // date.js modifies the Date prototype
 
-function p(o) { sys.puts(JSON.stringify(o)) }
-function puts(o) { sys.puts(o) }
+function p(o) { util.puts(JSON.stringify(o)) }
+function puts(o) { util.puts(o) }
 
 var posts = fs.readdirSync('./'),
 	markdownConverter = new Showdown.converter(),

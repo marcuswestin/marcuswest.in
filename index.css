@@ -1,5 +1,6 @@
-html, body {
-  font-family: Helvetica Neue, Helvetica;
+html,
+body {
+  font-family: Helvetica;
   color: #333;
 }
 .unselectable {
@@ -27,12 +28,12 @@ html, body {
   color: #666;
 }
 #post {
-  width: 1000px;
+  width: 1200px;
   margin: 50px 0 0 75px;
 }
 #post .body {
   float: left;
-  width: 600px;
+  width: 800px;
 }
 #post #disqus_thread {
   float: right;
@@ -55,8 +56,12 @@ a {
 pre {
   padding: 5px 0 3px 7px;
   line-height: 20px;
+  width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
-pre, code {
+pre,
+code {
   background-color: #002f58;
   color: #fff;
 }
