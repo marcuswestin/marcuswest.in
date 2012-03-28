@@ -7,7 +7,15 @@ How? By a unique combination of functional, declarative and reactive programming
 
 Seeing is believing! TodoMVC is a common demo application for popular JavaScript MVC frameworks. Implemented in vanilla JavaScript you end up with [317 lines of readable code](https://github.com/addyosmani/todomvc/blob/master/reference-examples/vanillajs/js/todo.js). The exact same functionality is coded in [less than 60 even more readable lines of fun code](https://github.com/marcuswestin/fun/blob/master/apps/todo-mvc/todo-mvc.fun). The result? The [Fun app](http://marcuswest.in/fun/todo-mvc.html) is identical to [the original](http://addyosmani.github.com/todomvc/reference-examples/vanillajs/index.html).
 
-I've included the Fun app source here for convenience:
+Want to give Fun a try for yourself? If you have node installed already, it's easy:
+
+	sudo npm install -g fun
+	curl https://raw.github.com/marcuswestin/fun/master/apps/todo-mvc/todo-mvc.fun > todo-mvc.fun
+	curl https://raw.github.com/marcuswestin/fun/master/apps/todo-mvc/todo-mvc.css > todo-mvc.css
+	fun todo-mvc.fun
+	# Go to localhost:8080 in your browser
+
+I've included the TodoMVC Fun app source here for convenience:
 
 	import localstorage
 	import filter
