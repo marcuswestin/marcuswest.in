@@ -2,27 +2,26 @@ var fs = require('fs')
 var mustache = require('mustache')
 var stylus = require('stylus')
 var util = require('util')
+var _ = require('underscore')
 var Showdown = require('../write/showdown')
 // var funSyntaxHighlighter = require('../lib/funSyntaxHighlighter')
 var mustache = require('mustache')
 var exec = require('child_process').exec
 require('./date') // date.js modifies the Date prototype
 
-compileRead(function(err) {
+compileRead(function(err, posts) {
 	if (err) { throw err }
-	compileIndex(function(err) {
+	compileIndex(posts, function(err) {
 		if (err) { throw err }
 		console.log("Done!")
 	})
 })
 
-function compileIndex(callback) {
+function compileIndex(posts, callback) {
 	var templateHTML = fs.readFileSync('src/index.html').toString()
-	var data = {}
 	var html
 
-	data.posts = JSON.parse(fs.readFileSync('read/posts.json').toString())
-	fs.writeFileSync('index.html', mustache.to_html(templateHTML, data))
+	fs.writeFileSync('index.html', mustache.to_html(templateHTML, { posts:posts }))
 
 	stylus.render(fs.readFileSync('src/index.styl').toString(), function(err, css) {
 		if (err) { return callback(err) }
@@ -35,40 +34,50 @@ function compileRead(callback) {
 	function puts(o) { util.puts(o) }
 	
 	var markdownConverter = new Showdown.converter()
-	var postsInfo = []
 	var dstDir = './read/'
 	
 	exec('rm -rf '+dstDir, function(err) {
 		if (err) { return callback(err) }
 		fs.mkdirSync(dstDir, 0755)
 		
-		var posts = fs.readdirSync('src/read')
-		for (var i=0, postID; postID = posts[i]; i++) {
-			if (!fs.statSync('src/read/' + postID).isDirectory()) { continue }
-			var postInfo = JSON.parse(fs.readFileSync('src/read/'+postID + '/info.json').toString())
-			var postMarkdow = fs.readFileSync('src/read/'+postID + '/post.md').toString()
-			var templateHTML = fs.readFileSync('src/read/template.html').toString()
-			var view = {}
-			var html
-	
-			view.body = markdownConverter.makeHtml(postMarkdow)
-			view.id = postInfo.id = postID
-			view.title = postInfo.title = postMarkdow.split("\n")[0]
-			view.date = postInfo.date
-	
-			html = mustache.to_html(templateHTML, view)
-			// html = syntaxHighlight(html)
-	
-			fs.mkdirSync(dstDir + postInfo.id + '/', 0755)
-			fs.writeFileSync(dstDir + postInfo.id + '/index.html', html)
-	
-			postsInfo.push(postInfo)
-		}
-	
-		postsInfo.sort(function(a,b){ return Date.parse(a.date) > Date.parse(b.date) ? -1 : 1 })
-		fs.writeFileSync(dstDir+'posts.json', JSON.stringify(postsInfo))
+		var postIds = _.filter(fs.readdirSync('src/read'), function(postId) {
+			return fs.statSync('src/read/' + postId).isDirectory()
+		})
 		
-		callback()
+		var postInfos = _.map(postIds, function(postId) {
+			var postInfo = JSON.parse(fs.readFileSync('src/read/'+postId + '/info.json').toString())
+			postInfo.id = postId
+			return postInfo
+		})
+		postInfos.sort(function(a, b) {
+			return Date.parse(a.date) > Date.parse(b.date) ? -1 : 1
+		})
+		
+		var posts = _.map(postInfos, function(postInfo, i) {
+			var postMarkdow = fs.readFileSync('src/read/'+postInfo.id + '/post.md').toString()
+			return {
+				body: markdownConverter.makeHtml(postMarkdow),
+				id: postInfo.id,
+				count: postInfos.length - i,
+				title: postMarkdow.split("\n")[0],
+				date: postInfo.date
+			}
+		})
+		
+		var templateHTML = fs.readFileSync('src/read/template.html').toString()
+		_.each(posts, function(post) {
+			var html = mustache.to_html(templateHTML, post)
+			// html = syntaxHighlight(html)
+
+			fs.mkdirSync(dstDir + post.id + '/', 0755)
+			fs.writeFileSync(dstDir + post.id + '/index.html', html)
+		})
+		
+		fs.writeFileSync(dstDir+'posts.json', JSON.stringify(_.map(posts, function(post) {
+			return { id:post.id, title:post.title, date:post.date }
+		})))
+		
+		callback(null, posts)
 	})
 }
 
