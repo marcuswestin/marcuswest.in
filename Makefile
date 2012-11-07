@@ -6,7 +6,7 @@ run:
 
 # Utils
 #######
-push: all
+push: index
 	git push origin master
 	curl http://marcuswest.in/pull/index.php
 
