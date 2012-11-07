@@ -26,17 +26,14 @@ body {
   color: #666;
 }
 #post {
-  width: 1200px;
+  width: 800px;
   margin: 50px 0 0 75px;
 }
 #post .body {
-  float: left;
   width: 800px;
 }
 #post #disqus_thread {
-  float: right;
-  width: 300px;
-  margin-top: 70px;
+  margin-top: 30px;
   opacity: 0.8;
 }
 * {
