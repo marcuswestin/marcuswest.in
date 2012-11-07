@@ -1,0 +1,39 @@
+html, body { font-family:Helvetica; color:#333; }
+
+.unselectable {
+	-moz-user-select:none;
+	-webkit-user-select:none;
+	cursor:default;
+}
+
+#landing {
+	width:800px; margin:50px auto;
+}
+
+.header
+	text-align left; float right; .unselectable; margin-bottom: 5px;
+	.logo { text-decoration: none; color: #333; }
+	.twitter { text-decoration: none; color: #666; }
+
+#post
+	width:1200px; margin:50px 0 0 75px;
+	.body { float: left; width: 800px; }
+	#disqus_thread { float: right; width: 300px; margin-top: 70px; opacity: .8; }
+
+* { cursor: default; }
+code { cursor: text; padding: 1px 2px 0; position: relative; bottom: 1px; }
+a { cursor: pointer; }
+
+pre { padding: 5px 0 3px 7px; line-height: 20px; width:100%; overflow:auto; -webkit-overflow-scrolling: touch; }
+
+pre, code { background-color: #002f58; color: #fff; }
+
+code .string { color: #3ad900; }
+code .keyword { color: #ffee7d; }
+code .operator { color: #f29d20; }
+code .xml { color: #d27d00; }
+/*code .type { color: #ff9d1b; }*/
+code .type { color: #f8d700; }
+code .global { color: #f8d700; }
+code .attr { color: #eb8f86; }
+

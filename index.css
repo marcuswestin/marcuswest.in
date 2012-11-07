@@ -13,12 +13,10 @@ body {
   margin: 50px auto;
 }
 .header {
-  text-align: right;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  cursor: default;
-  margin-bottom: 5px;
+  text-align: left;
+  float: right;
 }
+.header .unselectable; margin-bottom: 5px;,
 .header .logo {
   text-decoration: none;
   color: #333;
@@ -39,7 +37,7 @@ body {
   float: right;
   width: 300px;
   margin-top: 70px;
-  opacity: .8;
+  opacity: 0.8;
 }
 * {
   cursor: default;
