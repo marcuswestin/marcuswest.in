@@ -56,7 +56,8 @@ code {
   position: relative;
   bottom: 1px;
 }
-a {
+a,
+a > img {
   cursor: pointer;
 }
 pre {

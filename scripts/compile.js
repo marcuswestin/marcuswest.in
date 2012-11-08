@@ -77,7 +77,12 @@ function compileRead(callback) {
 			return { id:post.id, title:post.title, date:post.date }
 		})))
 		
-		callback(null, posts)
+		var onImagesCopied = _.after(posts.length, function() {
+			callback(null, posts)
+		})
+		_.each(posts, function(post) {
+			exec('cp -f src/read/'+post.id+'/*.jpg '+dstDir+post.id, onImagesCopied)
+		})
 	})
 }
 
