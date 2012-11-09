@@ -48,13 +48,15 @@ body {
   margin-top: 70px;
   opacity: 0.8;
 }
-@media only screen and (max-device-width: 900px) {
-  #post .body {
-    float: none;
-  }
-  #post #disqus_thread {
-    float: none;
-  }
+#post {
+  width: 800px;
+}
+#post .body {
+  float: none;
+}
+#post #disqus_thread {
+  float: none;
+  width: 1350px;
 }
 * {
   cursor: default;
