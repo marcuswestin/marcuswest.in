@@ -23,10 +23,13 @@
 </div>
  -->
 		</div>
+		
+		<h1>Marcus Westin</h1>
+		
 		<div class="posts">
 {{#posts}}
 			<div class="post-listing">
-				<span class="count">#{{ count }}</span>
+				<a class="count" href="read/{{ id }}">#{{ count }}</a>
 				<a href="read/{{ id }}/">{{ title }}</a>
 				<div class="date"> {{ date }} </div>
 			</div>

@@ -32,6 +32,7 @@ body {
   position: relative;
   top: 4px;
   font-weight: 200;
+  text-decoration: none;
 }
 #post {
   width: 1350px;
