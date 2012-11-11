@@ -34,18 +34,18 @@ function compileRead(callback) {
 	function puts(o) { util.puts(o) }
 	
 	var markdownConverter = new Showdown.converter()
-	var dstDir = './read/'
+	var dstDir = './on/'
 	
 	exec('rm -rf '+dstDir, function(err) {
 		if (err) { return callback(err) }
 		fs.mkdirSync(dstDir, 0755)
 		
-		var postIds = _.filter(fs.readdirSync('src/read'), function(postId) {
-			return fs.statSync('src/read/' + postId).isDirectory()
+		var postIds = _.filter(fs.readdirSync('src/on'), function(postId) {
+			return fs.statSync('src/on/' + postId).isDirectory()
 		})
 		
 		var postInfos = _.map(postIds, function(postId) {
-			var postInfo = JSON.parse(fs.readFileSync('src/read/'+postId + '/info.json').toString())
+			var postInfo = JSON.parse(fs.readFileSync('src/on/'+postId + '/info.json').toString())
 			postInfo.id = postId
 			return postInfo
 		})
@@ -54,7 +54,7 @@ function compileRead(callback) {
 		})
 		
 		var posts = _.map(postInfos, function(postInfo, i) {
-			var postMarkdow = fs.readFileSync('src/read/'+postInfo.id + '/post.md').toString()
+			var postMarkdow = fs.readFileSync('src/on/'+postInfo.id + '/post.md').toString()
 			return {
 				body: markdownConverter.makeHtml(postMarkdow),
 				id: postInfo.id,
@@ -64,7 +64,7 @@ function compileRead(callback) {
 			}
 		})
 		
-		var templateHTML = fs.readFileSync('src/read/template.html').toString()
+		var templateHTML = fs.readFileSync('src/on/template.html').toString()
 		_.each(posts, function(post) {
 			var html = mustache.to_html(templateHTML, post)
 			// html = syntaxHighlight(html)
@@ -81,7 +81,7 @@ function compileRead(callback) {
 			callback(null, posts)
 		})
 		_.each(posts, function(post) {
-			exec('cp -f src/read/'+post.id+'/*.jpg '+dstDir+post.id, onImagesCopied)
+			exec('cp -f src/on/'+post.id+'/*.jpg '+dstDir+post.id, onImagesCopied)
 		})
 	})
 }
