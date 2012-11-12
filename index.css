@@ -36,11 +36,12 @@ body {
 }
 #post {
   width: 1350px;
-  margin: 50px 0 50px 50px;
+  margin: 50px 0 0 50px;
 }
 #post .body {
   float: left;
   width: 800px;
+  margin: 0 0 50px 0;
 }
 #post #disqus_thread {
   float: right;
