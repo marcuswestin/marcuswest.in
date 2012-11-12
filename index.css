@@ -49,6 +49,9 @@ body {
   margin-top: 70px;
   opacity: 0.8;
 }
+#post li {
+  margin: 0 0 6px 0;
+}
 @media only screen and (max-device-width: 900px) {
   #post {
     width: 800px;
