@@ -49,4 +49,7 @@ As a corollary to this post, I want to mention that great product designers with
 
 In the meantime, I hope to employ artistic computing at its best while building [Dogo](https://dogoapp.com). It's a messaging product built to let us express ourselves!
 
-And if you happen to know a product design unicorn who would consider joining (as a cofounder) a seasoned full stack engineer and product developer who has already implemented the product, incorporated the company, and set up the company bank account (with a balance of $4,000 - wee!), then please let me know. I am <a href="mailto:marcus.westin@gmail.com">marcus.westin@gmail.com</a>.
+Are you a Product Design Unicorn?
+---------------------------------
+
+If you happen to know a product design unicorn who would consider joining (as a cofounder) a seasoned full stack engineer and product developer who has already implemented the product, incorporated the company, and set up the company bank account (with a balance of $4,000 - wee!), then please let me know. I am <a href="mailto:marcus.westin@gmail.com">marcus.westin@gmail.com</a>.
