@@ -4,6 +4,10 @@ all:
 run:
 	node scripts/runDev.js
 
+setup:
+	git submodule init && git submodule update;
+	cd node_modules/stylus && npm install .
+
 # Utils
 #######
 push: all

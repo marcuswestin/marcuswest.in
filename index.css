@@ -1,20 +1,17 @@
 html,
 body {
-  font-family: Helvetica;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
   color: #333;
+  margin: 0;
+  background: #333;
 }
 .unselectable {
   -moz-user-select: none;
   -webkit-user-select: none;
   cursor: default;
 }
-#landing {
-  width: 800px;
-  margin: 50px auto;
-}
 .header {
   text-align: left;
-  float: right;
 }
 .header .unselectable; margin-bottom: 5px;,
 .header .logo {
@@ -25,7 +22,16 @@ body {
   text-decoration: none;
   color: #666;
 }
-#landing .post-listing .count {
+#landing .head {
+  width: 800px;
+  padding: 50px 50px 0 50px;
+  background: #ddd;
+  float: left;
+}
+#landing .posts {
+  margin-left: 40px;
+}
+#landing .posts .post-listing .count {
   color: #666;
   font-size: 22px;
   margin: 0 10px 0 -40px;
@@ -34,25 +40,38 @@ body {
   font-weight: 200;
   text-decoration: none;
 }
-#post {
-  width: 1350px;
-  margin: 50px 0 0 50px;
+#landing .side {
+  float: left;
+  color: #fff;
 }
-#post .body {
+#landing .side a {
+  color: #fff;
+}
+.mainContent {
   float: left;
   width: 800px;
-  margin: 0 0 50px 0;
+  padding: 50px;
+  background: #fff;
+}
+#post {
+  width: 1400px;
+}
+#post .mainContent {
+  float: left;
 }
 #post #disqus_thread {
   float: right;
   width: 480px;
-  margin-top: 70px;
+  padding: 70px 0 0 0;
   opacity: 0.8;
 }
 #post li {
   margin: 0 0 6px 0;
 }
-@media only screen and (max-device-width: 900px) {
+@media screen and (max-width: 900px) {
+  #landing .side {
+    float: none;
+  }
   #post {
     width: 800px;
   }
@@ -62,6 +81,8 @@ body {
   #post #disqus_thread {
     float: none;
     width: 800px;
+    clear: both;
+    padding: 50px;
   }
 }
 * {
