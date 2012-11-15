@@ -19,15 +19,25 @@ compileRead(function(err, posts) {
 
 function compileIndex(posts, callback) {
 	var template = fs.readFileSync('src/mainTemplate.html').toString()
-	var partial = fs.readFileSync('src/landingTemplate.html').toString()
+	var partial = fs.readFileSync('src/essays/essayPartial.html').toString()
 	var indexHtml = mustache.to_html(template.replace('#_REPLACE_MAIN_CONTENT_', partial), { posts:posts })
-	
 	fs.writeFileSync('index.html', indexHtml)
 
 	stylus.render(fs.readFileSync('src/index.styl').toString(), function(err, css) {
 		if (err) { return callback(err) }
 		fs.writeFileSync('index.css', css)
 	})
+}
+
+function compileDrawings(callback) {
+	var drawingPaths = _.filter(fs.readdirSync('src/drawings'), function(drawingPath) {
+		return (drawingPath[0] != '.')
+	})
+
+	var template = fs.readFileSync('src/mainTemplate.html').toString()
+	var partial = fs.readFileSync('src/landingTemplate.html').toString()
+	var indexHtml = mustache.to_html(template.replace('#_REPLACE_MAIN_CONTENT_', partial), { posts:posts })
+	fs.writeFileSync('index.html', indexHtml)
 }
 
 function compileRead(callback) {
@@ -41,12 +51,12 @@ function compileRead(callback) {
 		if (err) { return callback(err) }
 		fs.mkdirSync(dstDir, 0755)
 		
-		var postIds = _.filter(fs.readdirSync('src/on'), function(postId) {
-			return fs.statSync('src/on/' + postId).isDirectory()
+		var postIds = _.filter(fs.readdirSync('src/essays'), function(postId) {
+			return fs.statSync('src/essays/' + postId).isDirectory()
 		})
 		
 		var postInfos = _.map(postIds, function(postId) {
-			var postInfo = JSON.parse(fs.readFileSync('src/on/'+postId + '/info.json').toString())
+			var postInfo = JSON.parse(fs.readFileSync('src/essays/'+postId + '/info.json').toString())
 			postInfo.id = postId
 			return postInfo
 		})
@@ -55,7 +65,7 @@ function compileRead(callback) {
 		})
 		
 		var posts = _.map(postInfos, function(postInfo, i) {
-			var postMarkdow = fs.readFileSync('src/on/'+postInfo.id + '/post.md').toString()
+			var postMarkdow = fs.readFileSync('src/essays/'+postInfo.id + '/post.md').toString()
 			return {
 				body: markdownConverter.makeHtml(postMarkdow),
 				id: postInfo.id,
@@ -65,7 +75,7 @@ function compileRead(callback) {
 			}
 		})
 		
-		var templateHTML = fs.readFileSync('src/on/postTemplate.html').toString()
+		var templateHTML = fs.readFileSync('src/essays/essayPartial.html').toString()
 		_.each(posts, function(post) {
 			var html = mustache.to_html(templateHTML, post)
 			// html = syntaxHighlight(html)
@@ -82,7 +92,7 @@ function compileRead(callback) {
 			callback(null, posts)
 		})
 		_.each(posts, function(post) {
-			exec('cp -f src/on/'+post.id+'/*.jpg '+dstDir+post.id, onImagesCopied)
+			exec('cp -f src/essays/'+post.id+'/*.jpg '+dstDir+post.id, onImagesCopied)
 		})
 	})
 }
