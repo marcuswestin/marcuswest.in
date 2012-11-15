@@ -10,10 +10,13 @@ var exec = require('child_process').exec
 require('./date') // date.js modifies the Date prototype
 
 compileRead(function(err, posts) {
-	if (err) { throw err }
-	compileIndex(posts, function(err) {
-		if (err) { throw err }
-		console.log("Done!")
+	if (err) { throw err.stack }
+	compileDrawings(function(err) {
+		if (err) { throw err.stack }
+		compileIndex(posts, function(err) {
+			if (err) { throw err.stack }
+			console.log("Done!")
+		})
 	})
 })
 
@@ -30,14 +33,36 @@ function compileIndex(posts, callback) {
 }
 
 function compileDrawings(callback) {
-	var drawingPaths = _.filter(fs.readdirSync('src/drawings'), function(drawingPath) {
-		return (drawingPath[0] != '.')
-	})
+	var dstDir = './drawings/'
 
-	var template = fs.readFileSync('src/mainTemplate.html').toString()
-	var partial = fs.readFileSync('src/landingTemplate.html').toString()
-	var indexHtml = mustache.to_html(template.replace('#_REPLACE_MAIN_CONTENT_', partial), { posts:posts })
-	fs.writeFileSync('index.html', indexHtml)
+	exec('rm -rf '+dstDir, function(err) {
+		if (err) { return callback(err) }
+		fs.mkdirSync(dstDir, 0755)
+		
+		var drawingPaths = _.filter(fs.readdirSync('src/drawings'), function(fileName) {
+			if (fileName[0] == '.') { return false }
+			var ext = fileName.split('.').pop()
+			switch(ext) {
+				case 'jpg':
+				case 'jpeg':
+				case 'png':
+					return true
+				default:
+					return false
+			}
+		})
+		var drawings = _.map(drawingPaths, function(fileName) {
+			exec('cp src/drawings/'+fileName+' '+dstDir, function(err) { if (err) { throw err } })
+			return { fileName:fileName }
+		})
+
+		var template = fs.readFileSync('src/mainTemplate.html').toString()
+		var partial = fs.readFileSync('src/drawings/drawingPartial.html').toString()
+		var indexHtml = mustache.to_html(template.replace('#_REPLACE_MAIN_CONTENT_', partial), { drawings:drawings })
+		fs.writeFileSync(dstDir+'index.html', indexHtml)
+		
+		callback()
+	})
 }
 
 function compileRead(callback) {
@@ -75,7 +100,7 @@ function compileRead(callback) {
 			}
 		})
 		
-		var templateHTML = fs.readFileSync('src/essays/essayPartial.html').toString()
+		var templateHTML = fs.readFileSync('src/essays/essayTemplate.html').toString()
 		_.each(posts, function(post) {
 			var html = mustache.to_html(templateHTML, post)
 			// html = syntaxHighlight(html)

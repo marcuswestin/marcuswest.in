@@ -39,7 +39,7 @@ function compile(callback) {
 
 function check(err, res) {
 	if (!err) { return false }
-	console.log("ERROR", err)
+	console.log("ERROR", err.stack ? err.stack : err)
 	res.writeHead(500)
 	res.end(err.stack ? err.stack : err)
 	return true
