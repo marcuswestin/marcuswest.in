@@ -18,10 +18,11 @@ compileRead(function(err, posts) {
 })
 
 function compileIndex(posts, callback) {
-	var templateHTML = fs.readFileSync('src/index.html').toString()
-	var html
-
-	fs.writeFileSync('index.html', mustache.to_html(templateHTML, { posts:posts }))
+	var template = fs.readFileSync('src/mainTemplate.html').toString()
+	var partial = fs.readFileSync('src/landingTemplate.html').toString()
+	var indexHtml = mustache.to_html(template.replace('#_REPLACE_MAIN_CONTENT_', partial), { posts:posts })
+	
+	fs.writeFileSync('index.html', indexHtml)
 
 	stylus.render(fs.readFileSync('src/index.styl').toString(), function(err, css) {
 		if (err) { return callback(err) }
@@ -64,7 +65,7 @@ function compileRead(callback) {
 			}
 		})
 		
-		var templateHTML = fs.readFileSync('src/on/template.html').toString()
+		var templateHTML = fs.readFileSync('src/on/postTemplate.html').toString()
 		_.each(posts, function(post) {
 			var html = mustache.to_html(templateHTML, post)
 			// html = syntaxHighlight(html)

@@ -8,23 +8,15 @@
 	<noscript style="width:50px; margin: 50px auto;">why not?</noscript>
 	<div id="landing">
 		<div class="head">
-			<h1>Marcus Westin</h1>
-			<!-- <a href="/">Essays</a>
-			<a href="/design">Design</a>
-			<a href="/drawings">Drawings</a> -->
+			<h1><a href="/">Marcus Westin</a></h1>
+		</div>
+		<div class="sections">
+			<a class="essays" href="/">Essays</a>
+			<a class="designs" href="/design">Designs</a>
+			<a class="drawings" href="/drawings">Drawings</a>
 		</div>
 		<div class="mainContent">
-			
-			<div class="posts">
-	{{#posts}}
-				<div class="post-listing">
-					<a class="count" href="on/{{ id }}">#{{ count }}</a>
-					<a href="on/{{ id }}/">{{ title }}</a>
-					<div class="date"> {{ date }} </div>
-				</div>
-				<br />
-	{{/posts}}
-			</div>
+			#_REPLACE_MAIN_CONTENT_
 		</div>
 		<div class="side">
 			<!-- <div class="links"
@@ -44,6 +36,11 @@
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	}, 3000)
+	
+	;(function(){
+		var parts = document.location.pathname.split('/')
+		document.body.className += (parts[parts.length - 2] || 'essays')
+	}())
 	</script>
 </body>
 </html>

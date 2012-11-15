@@ -12,8 +12,8 @@ console.log('Listening on :'+port)
 
 function handleRequest(req, res) {
 	console.log("Get", req.url)
-	exec('make', { cwd:baseDir }, function(err, stdout, stderr) {
-		if (check(err || stderr, res)) { return }
+	compile(function(err) {
+		if (check(err, res)) { return }
 		if (req.url[req.url.length - 1] == '/') {
 			req.url += 'index.html'
 		}
@@ -21,6 +21,18 @@ function handleRequest(req, res) {
 			if (check(err, res)) { return }
 			send(req, res, content)
 			console.log("Done")
+		})
+	})
+}
+
+function compile(callback) {
+	if (compile.callbacks) { return compile.callbacks.push(callback) }
+	compile.callbacks = [callback]
+	exec('make', { cwd:baseDir }, function(err, stderr, stdout) {
+		var callbacks = compile.callbacks
+		compile.callbacks = null
+		callbacks.forEach(function(cb) {
+			cb(err || stdout)
 		})
 	})
 }

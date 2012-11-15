@@ -1,4 +1,7 @@
-html, body { font-family "Open Sans", Helvetica, Arial, sans-serif; color:#333; margin 0; background #333; }
+html, body { font-family Helvetica, Arial, sans-serif; color:#333; margin 0; background #333; font-weight 100; font-size 18px; line-height 1.4em; }
+
+h1
+	line-height 1.2em;
 
 .unselectable {
 	-moz-user-select:none;
@@ -17,14 +20,32 @@ mobile = "screen and (max-device-width: 800px)"
 	.logo { text-decoration: none; color: #333; }
 	.twitter { text-decoration: none; color: #666; }
 
+.essays .sections a.essays
+	background #fff;
+.sections
+	display none;
+
+h1
+	font-family "Open Sans";
+	a
+		text-decoration none; color #333;
+
 #landing
+	.head, .sections
+		width contentWidth; float left;
 	.head
-		width contentWidth; padding contentSpace contentSpace 0 contentSpace; background #ddd; float left;
+		padding contentSpace contentSpace 0 contentSpace; background #ddd; 
+	.sections
+		padding 0 contentSpace 0 contentSpace; background #ddd; 
+		a
+			display block; float left; padding 10px 50px 0; margin 0; border-radius 2px 2px 0 0; text-decoration none;
 	.posts
 		margin-left 40px;
 		.post-listing
+			.title
+				font-size 20px; font-weight 100;
 			.count
-				color #666; font-size 22px; margin 0 10px 0 -40px; position relative; top 4px; font-weight 200; text-decoration none;
+				color #333; font-size 24px; margin 0 10px 0 -38px; position relative; top 2px; font-weight 100; text-decoration none;
 	.side
 		float left; color #fff;
 		a
@@ -34,9 +55,9 @@ mobile = "screen and (max-device-width: 800px)"
 	float left; width contentWidth; padding contentSpace; background #fff;
 
 #post
-	width 1400px; 
+	width contentTotalWidth + 510px; 
 	.mainContent { float: left; }
-	#disqus_thread { float: right; width: 480px; padding: 70px 0 0 0; opacity: .8; }
+	#disqus_thread { float: right; width: 480px; padding: 174px 0 0 0; opacity: .8; }
 	li { margin: 0 0 6px 0; }
 
 narrowContent()
@@ -56,12 +77,12 @@ narrowContent()
 	narrowContent()
 
 * { cursor: default; }
-code { cursor: text; padding: 1px 2px 0; position: relative; bottom: 1px; }
+code { font-family "courier new"; cursor: text; padding: 3px 2px 3px; position: relative; bottom: 1px; font-weight 100; }
 a, a > img { cursor: pointer; }
 
 pre { padding: 5px 0 3px 7px; line-height: 20px; width:100%; overflow:auto; -webkit-overflow-scrolling: touch; }
 
-pre, code { background-color: #002f58; color: #fff; }
+pre, code { background-color: #002f58; color: #fff; font-size 14px; }
 
 code .string { color: #3ad900; }
 code .keyword { color: #ffee7d; }
