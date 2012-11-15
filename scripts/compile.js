@@ -70,7 +70,7 @@ function compileRead(callback) {
 	function puts(o) { util.puts(o) }
 	
 	var markdownConverter = new Showdown.converter()
-	var dstDir = './on/'
+	var dstDir = './essays/'
 	
 	exec('rm -rf '+dstDir, function(err) {
 		if (err) { return callback(err) }
