@@ -10,6 +10,7 @@ contentSpace = 50px;
 contentWidth = 800px;
 contentTotalWidth = contentWidth + contentSpace * 2;
 narrow = "screen and (max-width: "+contentTotalWidth+")"
+mobile = "screen and (max-device-width: 800px)"
 
 .header
 	text-align left; .unselectable; margin-bottom: 5px;
@@ -38,7 +39,7 @@ narrow = "screen and (max-width: "+contentTotalWidth+")"
 	#disqus_thread { float: right; width: 480px; padding: 70px 0 0 0; opacity: .8; }
 	li { margin: 0 0 6px 0; }
 
-@media narrow
+narrowContent()
 	#landing
 		.side
 			float none;
@@ -48,6 +49,11 @@ narrow = "screen and (max-width: "+contentTotalWidth+")"
 			float none;
 		#disqus_thread
 			float none; width 800px; clear both; padding contentSpace;
+
+@media narrow
+	narrowContent()
+@media mobile
+	narrowContent()
 
 * { cursor: default; }
 code { cursor: text; padding: 1px 2px 0; position: relative; bottom: 1px; }

@@ -85,6 +85,23 @@ body {
     padding: 50px;
   }
 }
+@media screen and (max-device-width: 800px) {
+  #landing .side {
+    float: none;
+  }
+  #post {
+    width: 800px;
+  }
+  #post .body {
+    float: none;
+  }
+  #post #disqus_thread {
+    float: none;
+    width: 800px;
+    clear: both;
+    padding: 50px;
+  }
+}
 * {
   cursor: default;
 }

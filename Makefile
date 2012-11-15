@@ -10,7 +10,7 @@ setup:
 
 # Utils
 #######
-push: all
+push:
 	git push origin master
 	curl http://marcuswest.in/pull/index.php
 
