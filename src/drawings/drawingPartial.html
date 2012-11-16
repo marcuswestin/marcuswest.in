@@ -13,10 +13,11 @@
 		$('#drawings').on('click', '.drawing', function($e) {
 			$e.preventDefault()
 			var pos = $(this).offset()
-			var initialPos = { top:pos.top+'px', left:pos.left+'px', width:this.offsetWidth+'px', height:this.offsetHeight+'px' }
+			var scroll = { top:document.body.scrollTop, left:document.body.scrollLeft }
+			var initialPos = { top:pos.top-scroll.top+'px', left:pos.left-scroll.left+'px', width:this.offsetWidth+'px', height:this.offsetHeight+'px' }
 			if ($box) { $box.remove() }
 			$box = $('<div>Loading</div>')
-				.css({ position:'absolute', background:'#fff', textAlign:'center', border:'1px solid #ccc' })
+				.css({ position:'fixed', background:'#fff', textAlign:'center', border:'1px solid #ccc' })
 				.css(initialPos)
 				.appendTo(document.body)
 			var img = document.createElement('img')
