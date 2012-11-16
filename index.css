@@ -147,7 +147,7 @@ h3 a {
   float: left;
 }
 #drawings a.drawing img {
-  margin: 4px;
+  margin: 2px;
   border: 1px solid #fff;
 }
 #drawings a.drawing img:hover {
