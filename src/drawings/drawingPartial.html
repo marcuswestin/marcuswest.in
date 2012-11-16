@@ -1,9 +1,37 @@
 
-	<div class="drawings">
+	<div id="drawings">
 		{{#drawings}}
-			<div class="drawing">
-				{{ id }}
-				<img src="./{{ fileName }}">
-			</div>
+			<a class="drawing" href="{{ large }}">
+				<img src="{{ thumb }}">
+			</a>
 		{{/drawings}}
 	</div>
+	<script src="/jquery-1.8.2.min.js"></script>
+	<script>
+	;(function() {
+		var $box
+		$('#drawings').on('click', '.drawing', function($e) {
+			$e.preventDefault()
+			var pos = $(this).offset()
+			var initialPos = { top:pos.top+'px', left:pos.left+'px', width:this.offsetWidth+'px', height:this.offsetHeight+'px' }
+			if ($box) { $box.remove() }
+			$box = $('<div>Loading</div>')
+				.css({ position:'absolute', background:'#fff', textAlign:'center', border:'1px solid #ccc' })
+				.css(initialPos)
+				.appendTo(document.body)
+			var img = document.createElement('img')
+			img.src = this.href.replace('-thumb', '')
+			img.onload = function() {
+				$box
+					.empty()
+					.animate({ width:img.width+'px', height:img.height+'px', top:10, left:10 }, 250)
+					.append(img)
+					.click(function() {
+						$box.animate(initialPos, 200, function() {
+							$box.remove()
+						})
+					})
+			}
+		})
+	}())
+	</script>

@@ -1,4 +1,4 @@
-html, body { font-family Helvetica, Arial, sans-serif; color:#333; margin 0; background #333; font-weight 100; font-size 18px; line-height 1.4em; }
+html, body { font-family Helvetica, Arial, sans-serif; color:#333; margin 0; background #333; font-weight 100; font-size 16px; line-height 1.4em; }
 
 h1
 	line-height 1.2em;
@@ -20,12 +20,15 @@ mobile = "screen and (max-device-width: 800px)"
 	.logo { text-decoration: none; color: #333; }
 	.twitter { text-decoration: none; color: #666; }
 
-.sections
-	display none;
 .sections a
 	text-shadow 0 1px 0 #fff;
 .essays .sections a.essays
 	background #fff; text-shadow 0 1px 0 #ddd;
+.drawings .sections a.drawings
+	background #fff; text-shadow 0 1px 0 #ddd;
+.designs .sections a.designs
+	background #fff; text-shadow 0 1px 0 #ddd;
+
 
 h1
 	font-family "Open Sans", Helvetica;
@@ -47,13 +50,21 @@ h1
 		margin-left 40px;
 		.post-listing
 			.title
-				font-size 20px; font-weight 100;
+				font-size 1.2em; font-weight 100;
 			.count
-				color #333; font-size 24px; margin 0 10px 0 -38px; position relative; top 2px; font-weight 100; text-decoration none;
+				color #333; font-size 1.4em; margin 0 10px 0 -38px; position relative; top 2px; font-weight 100; text-decoration none;
 	.side
 		float left; color #fff;
 		a
 			color #fff;
+
+#drawings
+	a.drawing
+		text-decoration none; display block; float left;
+		img
+			margin 4px; border 1px solid #fff;
+		img:hover
+			border 1px solid #999;
 
 .mainContent
 	float left; width contentWidth; padding contentSpace; background #fff;

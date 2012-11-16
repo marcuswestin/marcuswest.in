@@ -17,8 +17,127 @@
 		</div>
 		<div class="mainContent">
 			
-	<div class="drawings">
+	<div id="drawings">
+					<a class="drawing" href="Hands/1.jpg">
+				<img src="Hands/1-thumb.jpg">
+			</a>
+					<a class="drawing" href="Hands/10.jpg">
+				<img src="Hands/10-thumb.jpg">
+			</a>
+					<a class="drawing" href="Hands/11.jpg">
+				<img src="Hands/11-thumb.jpg">
+			</a>
+					<a class="drawing" href="Hands/12.jpg">
+				<img src="Hands/12-thumb.jpg">
+			</a>
+					<a class="drawing" href="Hands/13.jpg">
+				<img src="Hands/13-thumb.jpg">
+			</a>
+					<a class="drawing" href="Hands/2.jpg">
+				<img src="Hands/2-thumb.jpg">
+			</a>
+					<a class="drawing" href="Hands/3.jpg">
+				<img src="Hands/3-thumb.jpg">
+			</a>
+					<a class="drawing" href="Hands/4.jpg">
+				<img src="Hands/4-thumb.jpg">
+			</a>
+					<a class="drawing" href="Hands/5.jpg">
+				<img src="Hands/5-thumb.jpg">
+			</a>
+					<a class="drawing" href="Hands/6.jpg">
+				<img src="Hands/6-thumb.jpg">
+			</a>
+					<a class="drawing" href="Hands/7.jpg">
+				<img src="Hands/7-thumb.jpg">
+			</a>
+					<a class="drawing" href="Hands/8.jpg">
+				<img src="Hands/8-thumb.jpg">
+			</a>
+					<a class="drawing" href="Hands/9.jpg">
+				<img src="Hands/9-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/1.jpg">
+				<img src="Highschool/1-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/10.jpg">
+				<img src="Highschool/10-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/11.jpg">
+				<img src="Highschool/11-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/12.jpg">
+				<img src="Highschool/12-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/13.jpg">
+				<img src="Highschool/13-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/14.jpg">
+				<img src="Highschool/14-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/15.jpg">
+				<img src="Highschool/15-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/16.jpg">
+				<img src="Highschool/16-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/17.jpg">
+				<img src="Highschool/17-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/2.jpg">
+				<img src="Highschool/2-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/3.jpg">
+				<img src="Highschool/3-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/4.jpg">
+				<img src="Highschool/4-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/5.jpg">
+				<img src="Highschool/5-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/6.jpg">
+				<img src="Highschool/6-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/7.jpg">
+				<img src="Highschool/7-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/8.jpg">
+				<img src="Highschool/8-thumb.jpg">
+			</a>
+					<a class="drawing" href="Highschool/9.jpg">
+				<img src="Highschool/9-thumb.jpg">
+			</a>
 		</div>
+	<script src="/jquery-1.8.2.min.js"></script>
+	<script>
+	;(function() {
+		var $box
+		$('#drawings').on('click', '.drawing', function($e) {
+			$e.preventDefault()
+			var pos = $(this).offset()
+			var initialPos = { top:pos.top+'px', left:pos.left+'px', width:this.offsetWidth+'px', height:this.offsetHeight+'px' }
+			if ($box) { $box.remove() }
+			$box = $('<div>Loading</div>')
+				.css({ position:'absolute', background:'#fff', textAlign:'center', border:'1px solid #ccc' })
+				.css(initialPos)
+				.appendTo(document.body)
+			var img = document.createElement('img')
+			img.src = this.href.replace('-thumb', '')
+			img.onload = function() {
+				$box
+					.empty()
+					.animate({ width:img.width+'px', height:img.height+'px', top:10, left:10 }, 250)
+					.append(img)
+					.click(function() {
+						$box.animate(initialPos, 200, function() {
+							$box.remove()
+						})
+					})
+			}
+		})
+	}())
+	</script>
 		</div>
 		<div class="side">
 			<!-- <div class="links"

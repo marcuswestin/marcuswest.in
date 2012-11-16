@@ -12,16 +12,43 @@ console.log('Listening on :'+port)
 
 function handleRequest(req, res) {
 	console.log("Get", req.url)
-	compile(function(err) {
-		if (check(err, res)) { return }
-		if (req.url[req.url.length - 1] == '/') {
-			req.url += 'index.html'
-		}
-		fs.readFile(__dirname+'/..'+req.url, function(err, content) {
-			if (check(err, res)) { return }
-			send(req, res, content)
-			console.log("Done")
+	var thumbMatch
+	if (thumbMatch = req.url.match(/\/drawings\/(.*)-thumb\.jpg/)) {
+		var filename = thumbMatch[1]+'.jpg'
+		var thumbName = thumbMatch[1]+'-thumb.jpg'
+		fs.stat('drawings/' + thumbName, function(err, stat) {
+			if (err) {
+				var command = 'convert src/drawings/'+filename+' -resize 300x300^ -gravity Center -crop 185x185+0+0 +repage drawings/'+thumbName
+				console.log("Generating thumbnail\n", command)
+				exec(command, function(err) {
+					if (check(err, res)) { return }
+					var command = 'convert src/drawings/'+filename+' -resize 800x800^ -gravity Center +repage drawings/'+filename
+					console.log(command)
+					exec(command, function(err) {
+						if (check(err, res)) { return }
+						sendFile(req, res)
+					})
+				})
+			} else {
+				sendFile(req, res)
+			}
 		})
+	} else {
+		compile(function(err) {
+			if (check(err, res)) { return }
+			if (req.url[req.url.length - 1] == '/') {
+				req.url += 'index.html'
+			}
+			sendFile(req, res)
+		})
+	}
+}
+
+function sendFile(req, res) {
+	fs.readFile(__dirname+'/..'+req.url, function(err, content) {
+		if (check(err, res)) { return }
+		send(req, res, content)
+		console.log("Done")
 	})
 }
 

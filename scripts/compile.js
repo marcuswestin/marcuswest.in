@@ -33,13 +33,9 @@ function compileIndex(posts, callback) {
 }
 
 function compileDrawings(callback) {
-	var dstDir = './drawings/'
-
-	exec('rm -rf '+dstDir, function(err) {
-		if (err) { return callback(err) }
-		fs.mkdirSync(dstDir, 0755)
-		
-		var drawingPaths = _.filter(fs.readdirSync('src/drawings'), function(fileName) {
+	function getDrawings(category) {
+		exec('mkdir -p drawings/'+category)
+		var drawingPaths = _.filter(fs.readdirSync('src/drawings/'+category), function(fileName) {
 			if (fileName[0] == '.') { return false }
 			var ext = fileName.split('.').pop()
 			switch(ext) {
@@ -51,18 +47,19 @@ function compileDrawings(callback) {
 					return false
 			}
 		})
-		var drawings = _.map(drawingPaths, function(fileName) {
-			exec('cp src/drawings/'+fileName+' '+dstDir, function(err) { if (err) { throw err } })
-			return { fileName:fileName }
+		return _.map(drawingPaths, function(fileName) {
+			return { category:category, large:category+'/'+fileName, thumb:category+'/'+fileName.replace('.jpg', '-thumb.jpg') }
 		})
+	}
 
-		var template = fs.readFileSync('src/mainTemplate.html').toString()
-		var partial = fs.readFileSync('src/drawings/drawingPartial.html').toString()
-		var indexHtml = mustache.to_html(template.replace('#_REPLACE_MAIN_CONTENT_', partial), { drawings:drawings })
-		fs.writeFileSync(dstDir+'index.html', indexHtml)
-		
-		callback()
-	})
+	var drawings = getDrawings('Hands').concat(getDrawings('Highschool'))
+
+	var template = fs.readFileSync('src/mainTemplate.html').toString()
+	var partial = fs.readFileSync('src/drawings/drawingPartial.html').toString()
+	var indexHtml = mustache.to_html(template.replace('#_REPLACE_MAIN_CONTENT_', partial), { drawings:drawings })
+	fs.writeFileSync('drawings/index.html', indexHtml)
+
+	callback()
 }
 
 function compileRead(callback) {
