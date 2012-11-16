@@ -1,4 +1,4 @@
-html, body { font-family Helvetica, Arial, sans-serif; color:#333; margin 0; background #333; font-weight 100; font-size 16px; line-height 1.4em; }
+html, body { font-family Helvetica, Arial, sans-serif; color:#333; margin 0; font-weight 100; font-size 16px; line-height 1.4em; }
 
 h1
 	line-height 1.2em;
@@ -12,7 +12,8 @@ h1
 contentSpace = 50px;
 contentWidth = 800px;
 contentTotalWidth = contentWidth + contentSpace * 2;
-narrow = "screen and (max-width: "+contentTotalWidth+")"
+sideWidth = 300px
+narrow = "screen and (max-width: "+(contentTotalWidth + sideWidth)+")"
 mobile = "screen and (max-device-width: 800px)"
 
 .header
@@ -30,14 +31,14 @@ mobile = "screen and (max-device-width: 800px)"
 	background #fff; text-shadow 0 1px 0 #ddd;
 
 
-h1
+h1, h2, h3
 	font-family "Open Sans", Helvetica;
 	a
 		text-decoration none; color #333;
 
 #landing
 	.head, .sections
-		width contentWidth; float left;
+		width 100%; float left;
 	.head
 		padding (contentSpace/2) contentSpace 0 contentSpace; background #ddd;
 		h1 a
@@ -54,7 +55,7 @@ h1
 			.count
 				color #333; font-size 1.4em; margin 0 10px 0 -38px; position relative; top 2px; font-weight 100; text-decoration none;
 	.side
-		float left; color #fff;
+		position fixed; right 0; top 0; color #fff; background #333; height 100%; padding (contentSpace/4);
 		a
 			color #fff;
 
@@ -63,7 +64,7 @@ h1
 		display block; text-decoration none; cursor pointer;
 	a
 		.icon
-			display inline-block; width 32px; height 32px; background-size:32px 32px; margin 10px 10px 0 16px; cursor pointer;
+			display inline-block; width 32px; height 32px; background-size:32px 32px; margin (contentSpace/8); margin-bottom 0; cursor pointer;
 		.icon.twitter { background-image:url('/links/twitter.png'); }
 		.icon.github { background-image:url('/links/github.png'); }
 		.icon.dribbble { background-image:url('/links/dribbble.png'); }
@@ -93,7 +94,7 @@ h1
 narrowContent()
 	#landing
 		.side
-			float none;
+			position static; width auto;
 	#post
 		width 800px;
 		.body

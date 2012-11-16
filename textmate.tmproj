@@ -5,6 +5,22 @@
 	<key>documents</key>
 	<array>
 		<dict>
+			<key>filename</key>
+			<string>README.md</string>
+			<key>lastUsed</key>
+			<date>2012-11-16T16:25:38Z</date>
+			<key>selected</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>Makefile</string>
+			<key>lastUsed</key>
+			<date>2012-11-15T23:16:48Z</date>
+		</dict>
+		<dict>
+			<key>expanded</key>
+			<true/>
 			<key>name</key>
 			<string>scripts</string>
 			<key>regexFolderFilter</key>

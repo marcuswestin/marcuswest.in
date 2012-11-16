@@ -18,7 +18,7 @@ function handleRequest(req, res) {
 		var thumbName = thumbMatch[1]+'-thumb.jpg'
 		fs.stat('drawings/' + thumbName, function(err, stat) {
 			if (err) {
-				var command = 'convert src/drawings/'+filename+' -resize 300x300^ -gravity Center -crop 185x185+0+0 +repage drawings/'+thumbName
+				var command = 'convert src/drawings/'+filename+' -resize 300x300^ -gravity Center -crop 190x190+0+0 +repage drawings/'+thumbName
 				console.log("Generating thumbnail\n", command)
 				exec(command, function(err) {
 					if (check(err, res)) { return }
