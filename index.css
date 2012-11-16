@@ -98,6 +98,37 @@ h1 a {
 #landing .side a {
   color: #fff;
 }
+#links a {
+  display: block;
+  text-decoration: none;
+}
+#links a .icon {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-size: 32px 32px;
+  margin: 10px 10px 0 16px;
+}
+#links a .icon.twitter {
+  background-image: url("/links/twitter.png");
+}
+#links a .icon.github {
+  background-image: url("/links/github.png");
+}
+#links a .icon.dribbble {
+  background-image: url("/links/dribbble.png");
+}
+#links a .icon.linkedin {
+  background-image: url("/links/linkedin.png");
+}
+#links a .icon.gmail {
+  background-image: url("/links/gmail.png");
+}
+#links a .label {
+  display: inline-block;
+  position: relative;
+  top: -10px;
+}
 #drawings a.drawing {
   text-decoration: none;
   display: block;
